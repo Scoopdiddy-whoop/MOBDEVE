@@ -21,67 +21,85 @@
     <TextView
         android:layout_width="120dp"
         android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
         android:background="@color/dark_blue"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="150dp"
         android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
-        android:background="@color/dark_blue"/>
+        android:background="@color/dark_blue"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
         android:id="@+id/tv_maintop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
         android:fontFamily="@font/lilitiaone"
+        android:gravity="center"
         android:letterSpacing="0.01"
         android:shadowColor="@color/head_blue"
         android:shadowDx="4"
-        android:shadowDy="14"
+        android:shadowDy="18"
         android:shadowRadius="0.1"
         android:text="LEGIT"
         android:textColor="@color/white"
         android:textSize="110sp"
         android:textStyle="bold"
-        android:gravity="center"
 
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499"
         app:outlineColor="@color/head_blue"
-        app:outlineSize="3dp"/>
+        app:outlineSize="3dp" />
 
     <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
         android:id="@+id/tv_mainbot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_maintop"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:text="CHECKERS"
-        android:textStyle="bold"
         android:fontFamily="@font/lilitiaone"
-        android:textSize="60sp"
-        android:textColor="@color/white"
         android:letterSpacing="-0.035"
-
-        app:outlineColor="@color/head_blue"
-        app:outlineSize="3dp"
         android:shadowColor="@color/head_blue"
         android:shadowDx="0"
-        android:shadowDy="14"
+        android:shadowDy="18"
         android:shadowRadius="0.1"
-        />
+        android:text="CHECKERS"
+        android:textColor="@color/white"
+        android:textSize="60sp"
+
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_maintop"
+        app:outlineColor="@color/head_blue"
+        app:outlineSize="3dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="45dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_mainbot"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+<!--        android:text="Play Online"-->
+        android:textAllCaps="false"
+        android:fontFamily="@font/lilitiaone">
+
+        <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Play Online"
+            />
+    </Button>
+
 
 
 
