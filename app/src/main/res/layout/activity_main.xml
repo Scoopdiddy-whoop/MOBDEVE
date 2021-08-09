@@ -62,7 +62,8 @@
 
     <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
         android:id="@+id/tv_mainbot"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lilitiaone"
         android:letterSpacing="-0.035"
@@ -81,7 +82,9 @@
         app:outlineColor="@color/head_blue"
         app:outlineSize="3dp" />
 
+
     <Button
+        android:id="@+id/btn_play"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginHorizontal="45dp"
@@ -89,19 +92,37 @@
         app:layout_constraintTop_toBottomOf="@id/tv_mainbot"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:backgroundTint = "@null"
         android:text="Play Online"
         android:textSize="25dp"
         android:textAllCaps="false"
         android:fontFamily="@font/lilitiaone"
-        android:backgroundTint="@color/button_blue"
-        >
+        android:background="@drawable/rounded_corners"
+        />
+    
+    <Button
+        android:id="@+id/btn_history"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
 
-<!--        <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="Play Online"-->
-<!--            />-->
-    </Button>
+
+        app:backgroundTint = "@null"
+
+        android:text="Match History"
+        android:textSize="20dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/lilitiaone"
+        android:background="@drawable/rounded_corners2"
+        app:layout_constraintTop_toBottomOf="@id/btn_play"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+
+
+
 
 
 
