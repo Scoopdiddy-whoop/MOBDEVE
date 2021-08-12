@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFF4E8"
+    >
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/lilitiaone"
+            android:gravity="center"
+            android:letterSpacing="0.01"
+            android:shadowColor="@color/head_blue"
+            android:shadowDx="15"
+            android:shadowDy="15"
+            android:shadowRadius="0.1"
+            android:text="LEGIT CHECKERS"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:outlineColor="@color/head_blue"
+            app:outlineSize="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
+            android:id="@+id/tv_user"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/lilitiaone"
+            android:gravity="center"
+            android:letterSpacing="0.01"
+            android:shadowColor="@color/head_blue"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="0.1"
+            android:text="Username"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:outlineColor="@color/head_blue"
+            app:outlineSize="3dp"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@drawable/rounded_edit"
+            android:textSize="35sp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
+            android:id="@+id/tv_password"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lilitiaone"
+            android:gravity="center"
+            android:letterSpacing="0.01"
+            android:shadowColor="@color/head_blue"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="0.1"
+            android:text="Password"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:outlineColor="@color/head_blue"
+            app:outlineSize="3dp"
+            app:layout_constraintTop_toBottomOf="@id/et_username"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_password"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@drawable/rounded_edit"
+            android:textSize="35sp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginTop="30dp"
+
+            android:paddingVertical="10dp"
+            app:backgroundTint = "@null"
+
+            android:text="Login"
+            android:textSize="30sp"
+            android:fontFamily="@font/lilitiaone"
+            android:background="@drawable/rounded_corners2"
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginTop="30dp"
+
+            android:paddingVertical="10dp"
+            app:backgroundTint = "@null"
+
+            android:text="Register"
+            android:textSize="30sp"
+            android:fontFamily="@font/lilitiaone"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
