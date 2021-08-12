@@ -1,15 +1,9 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-    <layer-list>
-        <item>
-            <shape>
-                <corners android:radius="24dp" />
-                <gradient
-                    android:startColor="#5EB1FF"
-                    android:endColor="#0286FF"
-                    />
-            </shape>
-        </item>
-    </layer-list>
-
-</item>
+<?xml version="1.0" encoding="utf-8"?>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <corners android:radius="24dp" />
+        <solid android:color="@color/button_blue" />
+        <gradient
+            android:startColor="#5EB1FF"
+            android:endColor="#0286FF"
+            />
+    </shape>
