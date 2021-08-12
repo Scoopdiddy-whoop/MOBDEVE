@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <shape xmlns:android="http://schemas.android.com/apk/res/android">
-        <corners android:radius="24dp" />
-        <solid android:color="@color/button_blue" />
-        <gradient
-            android:startColor="#5EB1FF"
-            android:endColor="#0286FF"
-            />
-    </shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape  android:shape="rectangle">
+
+            <solid android:color="#00407B" />
+            <corners android:radius="30dp" />
+
+        </shape>
+    </item>
+
+    <item android:bottom="15px">
+
+        <shape  android:shape="rectangle">
+            <padding android:bottom="10dp"
+                android:top="10dp"
+                android:left="20dp"
+                android:right="20dp"/>
+
+            <gradient
+                android:startColor="#5EB1FF"
+                android:endColor="#0286FF"
+                />
+            <corners android:radius="30dp" />
+        </shape>
+
+    </item>
+
+
+</layer-list>

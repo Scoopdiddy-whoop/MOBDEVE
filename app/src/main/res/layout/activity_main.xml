@@ -96,10 +96,15 @@ we<?xml version="1.0" encoding="utf-8"?>
         app:layout_constraintLeft_toLeftOf="parent"
         app:backgroundTint = "@null"
         android:text="Play Online"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textAllCaps="false"
         android:fontFamily="@font/lilitiaone"
         android:background="@drawable/rounded_corners"
+
+        android:padding="10dp"
+        android:elevation="15dp"
+        android:shadowColor="@color/black"
+        android:shadowDy="10dp"
         />
 
     <Button
@@ -113,7 +118,7 @@ we<?xml version="1.0" encoding="utf-8"?>
         app:backgroundTint = "@null"
 
         android:text="Match History"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textAllCaps="false"
         android:fontFamily="@font/lilitiaone"
         android:background="@drawable/rounded_corners2"
