@@ -64,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_user"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/rounded_edit"
-            android:textSize="35sp"
+            android:textSize="25sp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             />
@@ -98,7 +98,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_password"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/rounded_edit"
-            android:textSize="35sp"
+            android:textSize="25sp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             />
