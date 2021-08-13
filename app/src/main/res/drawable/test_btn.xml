@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Bottom 15dp Shadow -->
+    <item>
+        <shape  android:shape="rectangle">
+
+            <!--            Button Shadow Color -->
+            <solid android:color="#1781A6" />
+            <corners android:radius="30dp" />
+
+        </shape>
+    </item>
+
+    <!-- White Top color -->
+    <item android:bottom="15px">
+
+        <shape  android:shape="rectangle">
+            <padding android:bottom="10dp"
+                android:top="10dp"
+                android:left="20dp"
+                android:right="20dp"/>
+
+            <!--            Button TOP Color -->
+            <gradient
+                android:startColor="#87D0E3"
+                android:endColor="#00B9FF"
+                />
+            <corners android:radius="30dp" />
+        </shape>
+
+    </item>
+
+
+</layer-list>
