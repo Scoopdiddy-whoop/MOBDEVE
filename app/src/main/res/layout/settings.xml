@@ -171,8 +171,8 @@
             app:outlineColor="@color/head_blue"
             android:letterSpacing="0.2"
 
-            android:gravity="start"
-            android:layout_gravity="start"/>
+            android:gravity="center_vertical"
+            />
 
         <CheckBox
             android:id="@+id/cb_day"
@@ -212,7 +212,8 @@
             app:outlineColor="@color/head_blue"
             android:letterSpacing="0.2"
 
-            android:gravity="start" />
+            android:gravity="center_vertical"
+           />
 
         <CheckBox
             android:id="@+id/cb_night"
