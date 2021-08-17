@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Bottom 15dp Shadow -->
     <item>
         <shape  android:shape="rectangle">
 
-            <!--            Button Shadow Color -->
-            <solid android:color="#653600" />
+            <solid android:color="@color/wood" />
             <corners android:radius="30dp" />
-
 
         </shape>
     </item>
 
-    <!-- White Top color -->
-    <item android:bottom="15px">
+    <item android:bottom="15px" android:drawable="@drawable/wood">
 
         <shape  android:shape="rectangle">
+
             <padding android:bottom="10dp"
                 android:top="10dp"
                 android:left="20dp"
                 android:right="20dp"/>
-
-            <!--            Button TOP Color -->
-            <gradient
-                android:startColor="#FFD7A9"
-                android:centerColor="#FF8A00"
-                android:endColor="#FF8A00"
-                />
             <corners android:radius="30dp" />
         </shape>
 
