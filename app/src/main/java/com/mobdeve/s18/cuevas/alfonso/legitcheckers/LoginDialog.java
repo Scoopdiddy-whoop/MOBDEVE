@@ -42,7 +42,7 @@
 
     public void openRegister() {
          RegisterDialog registerDialog = new RegisterDialog();
-         registerDialog.show(getActivity().getSupportFragmentManager(), "register dialog");
+         registerDialog.show(getChildFragmentManager(),"register");
     }
  }
 
