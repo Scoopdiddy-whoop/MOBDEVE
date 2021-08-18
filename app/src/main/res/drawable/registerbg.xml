@@ -10,7 +10,7 @@
                 android:right="20dp"/>
             <solid android:color="#FFF4E8"/>
 
-            <stroke android:color="@color/head_blue" android:width="5dp"/>
+            <stroke android:color="@color/head_blue" android:width="15dp"/>
         </shape>
     </item>
 

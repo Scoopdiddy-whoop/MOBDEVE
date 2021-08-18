@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFF4E8"
+    android:background="@drawable/registerbg"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,6 +112,7 @@
             android:paddingVertical="10dp"
             app:backgroundTint = "@null"
 
+            android:maxLines="1"
             android:text="Login"
             android:textSize="30sp"
             android:fontFamily="@font/lilitiaone"
@@ -123,8 +124,9 @@
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginHorizontal="80dp"
             android:layout_marginTop="30dp"
 
@@ -133,6 +135,7 @@
 
             android:text="Register"
             android:textSize="30sp"
+            android:maxLines="1"
             android:fontFamily="@font/lilitiaone"
             android:background="@drawable/rounded_corners"
             app:layout_constraintTop_toBottomOf="@id/btn_login"
