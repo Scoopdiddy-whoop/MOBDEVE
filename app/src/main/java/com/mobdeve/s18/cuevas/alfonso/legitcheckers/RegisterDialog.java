@@ -20,11 +20,11 @@ public class RegisterDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.register_dialog, null);
         builder.setView(view);
 
+//        btn_back = view.findViewById(R.id.btn_back);
+//        btn_back.setOnClickListener(v->{
+//            dismiss();
+//        });
 
-        btn_back = view.findViewById(R.id.btn_back);
-        btn_back.setOnClickListener(v->{
-            getDialog().dismiss();
-        });
         return builder.create();
     }
 }
