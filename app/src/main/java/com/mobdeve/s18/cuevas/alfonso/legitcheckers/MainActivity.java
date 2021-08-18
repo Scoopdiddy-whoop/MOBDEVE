@@ -23,9 +23,7 @@ public class MainActivity extends AppCompatActivity {
             openDialog();
         });
 
-        Button btn = (Button)findViewById(R.id.btn_history);
-
-        btn.setOnClickListener(new View.OnClickListener() {
+        binding.btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class));
