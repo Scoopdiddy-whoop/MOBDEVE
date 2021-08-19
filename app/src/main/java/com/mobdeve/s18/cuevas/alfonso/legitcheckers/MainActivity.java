@@ -20,20 +20,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.btnFriend.setOnClickListener(v -> {
-            openDialog();
+            openLoginDialog();
         });
 
-        binding.btnHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
-            }
+        binding.btnHistory.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class)));
+
+        binding.btnSettings.setOnClickListener(v->{
+            openSettingsDialog();
         });
     }
 
-    public void openDialog() {
+    public void openLoginDialog() {
         LoginDialog loginDialog = new LoginDialog();
-        loginDialog.show(getSupportFragmentManager(), "example dialog");
+        loginDialog.show(getSupportFragmentManager(), "login dialog");
+    }
+    public void openSettingsDialog() {
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.show(getSupportFragmentManager(), "settings dialog");
     }
 
 
