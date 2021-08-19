@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Bottom 15dp Shadow -->
     <item>
         <shape  android:shape="rectangle">
 
-            <solid android:color="#00407B" />
+            <!--            Button Shadow Color -->
+            <solid android:color="#16799C" />
             <corners android:radius="30dp" />
+
 
         </shape>
     </item>
 
+    <!-- White Top color -->
     <item android:bottom="10px">
 
         <shape  android:shape="rectangle">
@@ -18,12 +22,12 @@
                 android:left="20dp"
                 android:right="20dp"/>
 
+            <!--            Button TOP Color -->
             <gradient
-                android:startColor="#5EB1FF"
-                android:endColor="#0286FF"
+                android:startColor="#87D0E3"
+                android:centerColor="#00B9FF"
+                android:endColor="#00B9FF"
                 />
-            <stroke android:width="3dp" android:color="@color/head_blue"/>
-
             <corners android:radius="30dp" />
         </shape>
 

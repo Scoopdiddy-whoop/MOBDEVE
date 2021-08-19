@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnFriend.setOnClickListener(v -> {
+        binding.btnLogin.setOnClickListener(v -> {
             openLoginDialog();
         });
 
