@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         binding.btnSettings.setOnClickListener(v->{
             openSettingsDialog();
         });
+
+        binding.btnFriend.setOnClickListener(v->{
+            openFriendsDialaog();
+        });
     }
 
     public void openLoginDialog() {
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         SettingsDialog settingsDialog = new SettingsDialog();
         settingsDialog.show(getSupportFragmentManager(), "settings dialog");
     }
-
-
+    public void openFriendsDialaog() {
+        FriendsDialog friendsDialog = new FriendsDialog();
+        friendsDialog.show(getSupportFragmentManager(), "friends dialog");
+    }
 }
