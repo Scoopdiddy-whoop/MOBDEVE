@@ -103,8 +103,8 @@
             />
 
         <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_register"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="80dp"
             android:layout_marginTop="30dp"
@@ -113,7 +113,7 @@
             app:backgroundTint = "@null"
 
             android:maxLines="1"
-            android:text="Login"
+            android:text="Register"
             android:textSize="30sp"
             android:fontFamily="@font/lilitiaone"
             android:background="@drawable/rounded_corners2"
@@ -122,26 +122,20 @@
             app:layout_constraintLeft_toLeftOf="parent"
             />
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_marginHorizontal="80dp"
-            android:layout_marginTop="30dp"
-
-            android:paddingVertical="10dp"
-            app:backgroundTint = "@null"
-
-            android:text="Register"
-            android:textSize="30sp"
-            android:maxLines="1"
-            android:fontFamily="@font/lilitiaone"
-            android:background="@drawable/rounded_corners"
-            app:layout_constraintTop_toBottomOf="@id/btn_login"
-            app:layout_constraintRight_toRightOf="parent"
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/arrow"
+            android:background="@drawable/circle"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="false"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="30dp"
             />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

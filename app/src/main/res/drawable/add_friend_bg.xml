@@ -6,9 +6,8 @@
         <shape  android:shape="rectangle">
 
             <!--            Button Shadow Color -->
-            <solid android:color="#653600" />
+            <solid android:color="#1781A6" />
             <corners android:radius="30dp" />
-
 
         </shape>
     </item>
@@ -24,9 +23,8 @@
 
             <!--            Button TOP Color -->
             <gradient
-                android:startColor="#FFD7A9"
-                android:centerColor="#FF8A00"
-                android:endColor="#FF8A00"
+                android:startColor="#83C2FD"
+                android:endColor="#0286FF"
                 />
             <corners android:radius="30dp" />
         </shape>
