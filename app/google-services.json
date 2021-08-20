@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928487535463",
+    "project_id": "legitcheckers",
+    "storage_bucket": "legitcheckers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928487535463:android:055f9e37f43b521d84b5c2",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s18.cuevas.alfonso.legitcheckers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928487535463-ag8f7nh3e13b6u3p0a0i3g229q5ed51s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoyZorvvq5ptntGKWwDxlIxn9SLR2w3kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928487535463-ag8f7nh3e13b6u3p0a0i3g229q5ed51s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
