@@ -1,5 +1,6 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -66,51 +67,57 @@ public class RegisterDialog extends AppCompatDialogFragment {
             String username = et_username.getText().toString();
             String password = et_password.getText().toString();
 
-            if(validateDataEntered()) {
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("REGISTER", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+//            if(validateDataEntered()) {
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Activity) getContext(), task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.i("REGISTER", "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                            //make it go back to main Activity
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("REGISTER", "createUserWithEmail:failure", task.getException());
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                        alertBuilder.setTitle("Success")
+                                .setMessage("New Account successfully created")
+                                .setPositiveButton("Ok", (dialog, which) -> {
+                                    ;
+                                });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
 
-                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-                            alertBuilder.setTitle("Error")
-                                    .setMessage("Failed to create new account")
-                                    .setPositiveButton("Ok", (dialog, which) -> {
-                                        ;
-                                    });
-                            AlertDialog alert = alertBuilder.create();
-                            alert.show();
-                        }
+                        //make it go back to main Activity
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.i("REGISTER", "createUserWithEmail:failure", task.getException());
+
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                        alertBuilder.setTitle("Error")
+                                .setMessage("Failed to create new account")
+                                .setPositiveButton("Ok", (dialog, which) -> {
+                                    ;
+                                });
+                        AlertDialog alert = alertBuilder.create();
+                        alert.show();
                     }
                 });
-            }
-            else {
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-                alertBuilder.setTitle("Error")
-                        .setMessage("Failed to create new account")
-                        .setPositiveButton("Ok", (dialog, which) -> {
-                            ;
-                        });
-                AlertDialog alert = alertBuilder.create();
-                alert.show();
-            }
+//            }
+//            else {
+//                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+//                alertBuilder.setTitle("Error")
+//                        .setMessage("Please input proper account details thank you!!!!!!!")
+//                        .setPositiveButton("Ok", (dialog, which) -> {
+//                            ;
+//                        });
+//                AlertDialog alert = alertBuilder.create();
+//                alert.show();
+//            }
         });
     }
-    public boolean validateDataEntered() {
-
-        if(validPassword() && validEmail() && validUsername()) {
-            return true;
-        }
-        return false;
-    }
+//    public boolean validateDataEntered() {
+//
+//        if(validPassword() && validEmail() && validUsername()) {
+//            return true;
+//        }
+//        return false;
+//    }
     public boolean validPassword() {
         String val = et_password.getText().toString();
 
