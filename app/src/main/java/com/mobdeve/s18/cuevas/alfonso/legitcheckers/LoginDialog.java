@@ -30,7 +30,7 @@
          View view = inflater.inflate(R.layout.login_dialog, null);
          builder.setView(view);
 
-         mAuth = FirebaseAuth.getInstance();
+//         mAuth = FirebaseAuth.getInstance();
 
          et_email = view.findViewById(R.id.et_email);
          et_password = view.findViewById(R.id.et_password);
@@ -46,10 +46,10 @@
      public void onStart() {
          super.onStart();
 
-         FirebaseUser currUser = mAuth.getCurrentUser();
-         if(currUser != null) {
-
-         }
+//         FirebaseUser currUser = mAuth.getCurrentUser();
+//         if(currUser != null) {
+//
+//         }
      }
 
      public void openRegister() {

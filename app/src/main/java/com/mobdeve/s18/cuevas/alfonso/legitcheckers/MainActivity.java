@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.FirebaseApp;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(this);
 //        setContentView(R.layout.activity_main);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
