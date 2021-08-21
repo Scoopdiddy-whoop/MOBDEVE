@@ -5,11 +5,11 @@ import java.util.Map;
 public class User {
     private String id;
     private Map friendlist;
-    private String[] matches;
+    private Match[] matches;
     private String username;
 
     public User(String id, Map friendlist,
-                String[] matches, String username){
+                Match[] matches, String username){
         this.id = id;
         this.friendlist = friendlist;
         this.matches = matches;
@@ -32,11 +32,11 @@ public class User {
         this.friendlist = friendlist;
     }
 
-    public String[] getMatches() {
+    public Match[] getMatches() {
         return matches;
     }
 
-    public void setMatches(String[] matches) {
+    public void setMatches(Match[] matches) {
         this.matches = matches;
     }
 
