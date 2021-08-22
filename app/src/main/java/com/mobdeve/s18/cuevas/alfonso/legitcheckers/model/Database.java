@@ -27,13 +27,38 @@ public class Database {
         db = FirebaseFirestore.getInstance();
     }
     public boolean addUser(User user){
-        db.collection("users").document(user.getId());
+        final boolean added[] = new boolean[1];
+        db.collection("users").document(user.getId()).set(new HashMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.i("DATABASE", "Account added");
+                added[0]=true;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("DATABASE", "Account not added");
+                added[0]=false;
+            }
+        });
+        updateFriendList(user, user.getFriendlist());
+        updateMatches(user, user.getMatches());
+        updateUsername(user, user.getUsername());
 
-        return false;
+        return added[0];
     }
     public boolean addFriend(User user, String friendID){
-        Map friendlist = getFriendList(user);
-        friendlist.put("friendID", friendID);
+        Map<String, Object> friendlist = getFriendList(user);
+
+        if(friendlist != null) {
+            friendlist.put("friendID", friendID);
+            Log.i("DATABASE", "FRIENDLIST IS NOT NULL");
+        }
+        else{
+            friendlist = new HashMap<>();
+            friendlist.put("firendID", friendID);
+            Log.i("DATABASE", "FRIENDLIST IS NULL");
+        }
         final boolean[] valid = new boolean[1];
 
         db.collection("users").document(user.getId()).update("friendlist", friendlist).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -55,7 +80,7 @@ public class Database {
         return valid[0];
     }
     public boolean updateFriendList(User user, Map friendList) {
-        Map updatedList = friendList;
+        Map<String, Object> updatedList = friendList;
         final boolean[] valid = new boolean[1];
 
         db.collection("users").document(user.getId()).update("friendlist", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -66,37 +91,40 @@ public class Database {
             }
 
         })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        valid[0] = false;
-                        Log.i("DATABASE", "Error in updated friend list", e);
-                    }
-                });
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                valid[0] = false;
+                Log.i("DATABASE", "Error in updated friend list", e);
+            }
+        });
 
         return valid[0];
 
     }
     public Map getFriendList(User user){
         DocumentReference docRef = db.collection("users").document(user.getId());
-        final Map[] friendlist = new Map[1];
+        final Map<String, Object>[] friendlist = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     friendlist[0] = (Map) document.getData().get("friendlist");
-                    Log.d("DATABASE", "DocumentSnapshot data: " + document.getData());
+                    Log.i("DATABASE", "Friendlist data: " + friendlist[0]);
 
                 } else {
-                    Log.d("DATABASE", "No such document");
+                    Log.i("DATABASE", "No friendlist data");
                 }
+            }
+            else{
+                Log.i("DATABASE", "it gone done did it");
             }
         });
         return friendlist[0];
     }
     public boolean addMatch(User user, String matchID){
-        Map matches = getMatches(user);
+        Map<String, Object> matches = getMatches(user);
         matches.put("matchID",  matchID);
         final boolean[] valid = new boolean[1];
 
@@ -118,7 +146,7 @@ public class Database {
         return valid[0];
     }
     public boolean updateMatches(User user, Map matches) {
-        Map updatedList = matches;
+        Map<String, Object> updatedList = matches;
         final boolean[] valid = new boolean[1];
 
         db.collection("users").document(user.getId()).update("matches", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -142,16 +170,16 @@ public class Database {
     }
     public Map getMatches(User user){
         DocumentReference docRef = db.collection("users").document(user.getId());
-        final Map[] matches = new Map[1];
+        final Map<String, Object>[] matches = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     matches[0] = (Map) document.getData().get("matches");
-                    Log.d("DATABASE", "DocumentSnapshot data: " + document.getData());
+                    Log.d("DATABASE", "Matches data: " + matches[0]);
                 } else {
-                    Log.d("DATABASE", "No such document");
+                    Log.d("DATABASE", "No Matches data");
                 }
             }
         });
@@ -166,9 +194,9 @@ public class Database {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     username[0] = (String) document.getData().get("username");
-                    Log.d("DATABASE", "DocumentSnapshot data: " + document.getData());
+                    Log.d("DATABASE", "Username data: " + username[0]);
                 } else {
-                    Log.d("DATABASE", "No such document");
+                    Log.d("DATABASE", "No username data");
                 }
             }
         });

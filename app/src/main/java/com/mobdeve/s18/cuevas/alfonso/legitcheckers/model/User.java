@@ -1,21 +1,27 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
     private String id;
-    private Map friendlist;
-    private Match[] matches;
+    private Map<String, Object> friendlist;
+    private Map<String, Object> matches;
     private String username;
 
     public User(String id, Map friendlist,
-                Match[] matches, String username){
+                Map matches, String username){
         this.id = id;
         this.friendlist = friendlist;
         this.matches = matches;
         this.username = username;
     }
-
+    public User(String id, String username) {
+        this.id = id;
+        this.username = username;
+        this.friendlist = new HashMap<>();
+        this.matches = new HashMap<>();
+    }
     public String getId() {
         return id;
     }
@@ -32,11 +38,11 @@ public class User {
         this.friendlist = friendlist;
     }
 
-    public Match[] getMatches() {
+    public Map getMatches() {
         return matches;
     }
 
-    public void setMatches(Match[] matches) {
+    public void setMatches(Map matches) {
         this.matches = matches;
     }
 

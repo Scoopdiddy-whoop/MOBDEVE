@@ -23,7 +23,11 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 public class RegisterDialog extends AppCompatDialogFragment {
@@ -73,6 +77,12 @@ public class RegisterDialog extends AppCompatDialogFragment {
                         // Sign in success, update UI with the signed-in user's information
                         Log.i("REGISTER", "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+
+                        //connect user to database data
+                        User dbUser = new User(user.getUid(), username);
+                        Database db = new Database();
+                        db.addUser(dbUser);
+                        db.addFriend(dbUser, "DB2632NIGGUH");
 
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                         alertBuilder.setTitle("Success")
