@@ -80,9 +80,9 @@ public class RegisterDialog extends AppCompatDialogFragment {
 
                         //connect user to database data
                         User dbUser = new User(user.getUid(), username);
+                        Log.i("REGISTER", dbUser.getFriendlist().toString());
                         Database db = new Database();
                         db.addUser(dbUser);
-                        db.addFriend(dbUser, "DB2632NIGGUH");
 
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                         alertBuilder.setTitle("Success")
@@ -92,7 +92,6 @@ public class RegisterDialog extends AppCompatDialogFragment {
                                 });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
-
                         //make it go back to main Activity
                     } else {
                         // If sign in fails, display a message to the user.
@@ -173,4 +172,5 @@ public class RegisterDialog extends AppCompatDialogFragment {
             return true;
         }
     }
+
 }

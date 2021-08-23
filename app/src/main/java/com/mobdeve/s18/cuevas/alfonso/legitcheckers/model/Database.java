@@ -32,6 +32,10 @@ public class Database {
             @Override
             public void onSuccess(Void unused) {
                 Log.i("DATABASE", "Account added");
+                updateFriendList(user, user.getFriendlist());
+                updateMatches(user, user.getMatches());
+                updateUsername(user, user.getUsername());
+
                 added[0]=true;
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -41,53 +45,38 @@ public class Database {
                 added[0]=false;
             }
         });
-        updateFriendList(user, user.getFriendlist());
-        updateMatches(user, user.getMatches());
-        updateUsername(user, user.getUsername());
 
         return added[0];
     }
-    public boolean addFriend(User user, String friendID){
-        Map<String, Object> friendlist = getFriendList(user);
 
-        if(friendlist != null) {
-            friendlist.put("friendID", friendID);
-            Log.i("DATABASE", "FRIENDLIST IS NOT NULL");
-        }
-        else{
-            friendlist = new HashMap<>();
-            friendlist.put("firendID", friendID);
-            Log.i("DATABASE", "FRIENDLIST IS NULL");
-        }
-        final boolean[] valid = new boolean[1];
-
-        db.collection("users").document(user.getId()).update("friendlist", friendlist).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void addFriend(User user, String friendID){
+        getFriendList(user, new FirebaseMapCallback() {
             @Override
-            public void onSuccess(Void aVoid) {
-                valid[0] = true;
-                Log.i("DATABASE", "Friend added to friend list");
-            }
-
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                valid[0] = false;
-                Log.i("DATABASE", "Error adding friend", e);
+            public void onCallBack(Map<String, Object> map) {
+                map.put("friendID", friendID);
+                db.collection("users").document(user.getId()).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("DATABASE", "Friend added to friend list");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("DATABASE", "Error adding friend", e);
+                    }
+                });
             }
         });
-
-        return valid[0];
     }
     public boolean updateFriendList(User user, Map friendList) {
-        Map<String, Object> updatedList = friendList;
         final boolean[] valid = new boolean[1];
 
-        db.collection("users").document(user.getId()).update("friendlist", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user.getId()).update("friendlist", friendList).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 valid[0] = true;
-                Log.i("DATABASE", "Friend list has been updated ");
+                Log.i("DATABASE", "Friend list has been updated ");a
             }
 
         })
@@ -102,7 +91,7 @@ public class Database {
         return valid[0];
 
     }
-    public Map getFriendList(User user){
+    public Map getFriendList(User user, FirebaseMapCallback firebaseMapCallback){
         DocumentReference docRef = db.collection("users").document(user.getId());
         final Map<String, Object>[] friendlist = new Map[1];
 
@@ -112,6 +101,7 @@ public class Database {
                 if (document.exists()) {
                     friendlist[0] = (Map) document.getData().get("friendlist");
                     Log.i("DATABASE", "Friendlist data: " + friendlist[0]);
+                    firebaseMapCallback.onCallBack(friendlist[0]);
 
                 } else {
                     Log.i("DATABASE", "No friendlist data");
@@ -224,6 +214,8 @@ public class Database {
 
         return valid[0];
     }
-
+    public interface FirebaseMapCallback{
+        void onCallBack(Map<String, Object> map);
+    }
 }
 
