@@ -76,7 +76,7 @@ public class Database {
             @Override
             public void onSuccess(Void aVoid) {
                 valid[0] = true;
-                Log.i("DATABASE", "Friend list has been updated ");a
+                Log.i("DATABASE", "Friend list has been updated ");
             }
 
         })
