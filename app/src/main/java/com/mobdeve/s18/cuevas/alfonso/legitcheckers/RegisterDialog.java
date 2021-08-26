@@ -3,7 +3,6 @@ package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -12,23 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executor;
 
 public class RegisterDialog extends AppCompatDialogFragment {
     private ImageButton btn_back;
@@ -64,6 +53,8 @@ public class RegisterDialog extends AppCompatDialogFragment {
 
     public void setupListeners() {
         btn_back.setOnClickListener(v->{
+            LoginDialog loginDialog = new LoginDialog();
+            loginDialog.show(getParentFragmentManager(), "login dialog");
             this.dismiss();
         });
         btn_register.setOnClickListener(v->{
@@ -88,7 +79,7 @@ public class RegisterDialog extends AppCompatDialogFragment {
                         alertBuilder.setTitle("Success")
                                 .setMessage("New Account successfully created")
                                 .setPositiveButton("Ok", (dialog, which) -> {
-                                    ;
+                                    this.dismiss();
                                 });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();

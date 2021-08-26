@@ -1,14 +1,13 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,9 +17,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         FirebaseApp.initializeApp(this);
-//        setContentView(R.layout.activity_main);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -49,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openLoginDialog() {
+        //MAKE SURE TO REMOVE SIGN OUT LINE WHEN DONE
+        //TESTING SIGN IN AND REGISTER
+        FirebaseAuth.getInstance().signOut();
         LoginDialog loginDialog = new LoginDialog();
         loginDialog.show(getSupportFragmentManager(), "login dialog");
     }
