@@ -26,6 +26,7 @@
      private Button btn_login;
      private FirebaseAuth mAuth;
      private View view;
+     private final static String INVALID = "-9999";
 
      @Override
      public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -65,13 +66,10 @@
              String email = et_email.getText().toString();
              String password = et_password.getText().toString();
 
-             if(email.equals(null) || email.isEmpty() || password.isEmpty() || password.equals(null)) {
-                 email = "-999999";
-                 password = "-999999";
+             if(email.equals(null) || email.trim().isEmpty() || password.trim().isEmpty() || password.equals(null)) {
+                 email = "INVALID";
+                 password = "INVALID";
              }
-
-             Log.i("LOGIN", "email: " + email);
-             Log.i("LOGIN", "password: " + password);
 
              mAuth.signInWithEmailAndPassword(email, password)
                      .addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
