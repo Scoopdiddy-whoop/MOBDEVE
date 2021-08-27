@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser currUser = mAuth.getCurrentUser();
             if(currUser != null) {
                 Log.i("LOGIN", "User currently logged in: " + mAuth.getCurrentUser().toString());
-                //Enter sign out dialog here
+                openSignOutDialog();
             }
             else{
                 openLoginDialog();
@@ -61,5 +61,9 @@ public class MainActivity extends AppCompatActivity {
     public void openFriendsDialaog() {
         FriendsDialog friendsDialog = new FriendsDialog();
         friendsDialog.show(getSupportFragmentManager(), "friends dialog");
+    }
+    public void openSignOutDialog() {
+        SignoutDialog signoutDialog = new SignoutDialog();
+        signoutDialog.show(getSupportFragmentManager(), "signout dialog");
     }
 }
