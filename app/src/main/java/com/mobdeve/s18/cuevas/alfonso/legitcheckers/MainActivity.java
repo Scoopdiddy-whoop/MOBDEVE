@@ -2,12 +2,14 @@ package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,33 +25,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.btnLogin.setOnClickListener(v -> {
-            openLoginDialog();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currUser = mAuth.getCurrentUser();
+            if(currUser != null) {
+                Log.i("LOGIN", "User currently logged in: " + mAuth.getCurrentUser().toString());
+                //Enter sign out dialog here
+            }
+            else{
+                openLoginDialog();
+            }
         });
-
         binding.btnHistory.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class)));
-
         binding.btnSettings.setOnClickListener(v->{
             openSettingsDialog();
         });
-
         binding.btnFriend.setOnClickListener(v->{
             openFriendsDialaog();
         });
-
         binding.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
             }
         });
-
     }
-
     public void openLoginDialog() {
-        //MAKE SURE TO REMOVE SIGN OUT LINE WHEN DONE
-        //TESTING SIGN IN AND REGISTER
-        FirebaseAuth.getInstance().signOut();
         LoginDialog loginDialog = new LoginDialog();
         loginDialog.show(getSupportFragmentManager(), "login dialog");
     }

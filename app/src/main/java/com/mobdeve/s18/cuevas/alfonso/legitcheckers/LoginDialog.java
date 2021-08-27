@@ -44,11 +44,7 @@
      @Override
      public void onStart() {
          super.onStart();
-         FirebaseUser currUser = mAuth.getCurrentUser();
-         if(currUser != null) {
-             Log.i("LOGIN", "User currently logged in: " + mAuth.getCurrentUser().toString());
-             exitLogin();
-         }
+
      }
      public void setupUI() {
          et_email = view.findViewById(R.id.et_email);

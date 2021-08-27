@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/registerbg"
+    android:padding="30dp">
+
+    <com.mobdeve.s18.cuevas.alfonso.legitcheckers.TextViewOutline
+        android:id="@+id/tv_username"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+
+        android:text="Username"
+        android:shadowColor="@color/head_blue"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="0.1"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:outlineColor="@color/head_blue"
+        app:outlineSize="3dp"
+        android:fontFamily="@font/lilitiaone"
+        />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_username"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        android:paddingHorizontal="30dp"
+
+        android:text="Sign out"
+        android:fontFamily="@font/lilitiaone"
+        android:background="@drawable/rounded_corners"
+        app:backgroundTint = "@null"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
