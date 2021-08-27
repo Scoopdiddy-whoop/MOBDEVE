@@ -16,7 +16,7 @@ public class SignoutDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.signout_dialog, null);
         builder.setView(view);
-
+        
         return builder.create();
     }
 
