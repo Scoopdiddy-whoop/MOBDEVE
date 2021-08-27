@@ -29,7 +29,7 @@
         />
 
     <Button
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_signout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
