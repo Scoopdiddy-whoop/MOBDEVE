@@ -1,7 +1,7 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers.model;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Map;       
 
 public class User {
     private String id;

@@ -25,11 +25,11 @@ public class Database {
             @Override
             public void onSuccess(Void unused) {
                 Log.i("DATABASE", "Account added");
-                updateFriendList(user, user.getFriendlist());
-                updateMatches(user, user.getMatches());
-                updateUsername(user, user.getUsername());
-                updateWins(user, user.getWins());
-                updateLosses(user, user.getLosses());
+                updateFriendList(user.getId(), user.getFriendlist());
+                updateMatches(user.getId(), user.getMatches());
+                updateUsername(user.getId(), user.getUsername());
+                updateWins(user.getId(), user.getWins());
+                updateLosses(user.getId(), user.getLosses());
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -40,12 +40,12 @@ public class Database {
         });
     }
 
-    public void addFriend(User user, String friendID){
+    public void addFriend(String user, String friendID){
         getFriendList(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, Object> map) {
                 map.put("friendID", friendID);
-                db.collection("users").document(user.getId()).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("users").document(user).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Friend added to friend list");
@@ -60,10 +60,10 @@ public class Database {
             }
         });
     }
-    public boolean updateFriendList(User user, Map friendList) {
+    public boolean updateFriendList(String user, Map friendList) {
         final boolean[] valid = new boolean[1];
 
-        db.collection("users").document(user.getId()).update("friendlist", friendList).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user).update("friendlist", friendList).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 valid[0] = true;
@@ -82,8 +82,8 @@ public class Database {
         return valid[0];
 
     }
-    public void getFriendList(User user, FirebaseMapCallback firebaseMapCallback){
-        DocumentReference docRef = db.collection("users").document(user.getId());
+    public void getFriendList(String user, FirebaseMapCallback firebaseMapCallback){
+        DocumentReference docRef = db.collection("users").document(user);
         final Map<String, Object>[] friendlist = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
@@ -100,13 +100,13 @@ public class Database {
             }
         });
     }
-    public void addMatch(User user, String matchID){
+    public void addMatch(String user, String matchID){
         getMatches(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, Object> matches) {
                 matches.put("matchID",  matchID);
                 final boolean[] valid = new boolean[1];
-                db.collection("users").document(user.getId()).update("matches", matches).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("users").document(user).update("matches", matches).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         valid[0] = true;
@@ -123,11 +123,11 @@ public class Database {
             }
         });
     }
-    public boolean updateMatches(User user, Map matches) {
+    public boolean updateMatches(String user, Map matches) {
         Map<String, Object> updatedList = matches;
         final boolean[] valid = new boolean[1];
 
-        db.collection("users").document(user.getId()).update("matches", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user).update("matches", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 valid[0] = true;
@@ -146,8 +146,8 @@ public class Database {
         return valid[0];
 
     }
-    public Map getMatches(User user, FirebaseMapCallback firebaseMapCallback){
-        DocumentReference docRef = db.collection("users").document(user.getId());
+    public Map getMatches(String user, FirebaseMapCallback firebaseMapCallback){
+        DocumentReference docRef = db.collection("users").document(user);
         final Map<String, Object>[] matches = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
@@ -164,8 +164,8 @@ public class Database {
         });
         return matches[0];
     }
-    public String getUsername(User user, FirebaseStringCallback firebaseStringCallback) {
-        DocumentReference docRef = db.collection("users").document(user.getId());
+    public String getUsername(String user, FirebaseStringCallback firebaseStringCallback) {
+        DocumentReference docRef = db.collection("users").document(user);
         final String[] username = new String[1];
 
         docRef.get().addOnCompleteListener(task -> {
@@ -182,11 +182,11 @@ public class Database {
         });
         return username[0];
     }
-    public boolean updateUsername(User user, String username) {
+    public boolean updateUsername(String user, String username) {
         String updatedUsername = username;
         final boolean[] valid = new boolean[1];
 
-        db.collection("users").document(user.getId()).update("username", updatedUsername).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user).update("username", updatedUsername).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 valid[0] = true;
@@ -204,12 +204,12 @@ public class Database {
 
         return valid[0];
     }
-    public void addWin(User user) {
+    public void addWin(String user) {
         getWins(user, new FirebaseIntCallback() {
             @Override
             public void onCallBack(int wins) {
                 wins+=1;
-                db.collection("users").document(user.getId()).update("wins", wins).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("users").document(user).update("wins", wins).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Wins has been increased by 1");
@@ -224,28 +224,27 @@ public class Database {
             }
         });
     }
-    public void getWins(User user, FirebaseIntCallback firebaseIntCallback) {
-        DocumentReference docRef = db.collection("users").document(user.getId());
-        final int[] wins = new int[1];
+    public void getWins(String user, FirebaseIntCallback firebaseIntCallback) {
+        DocumentReference docRef = db.collection("users").document(user);
 
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    wins[0] = (int) document.getData().get("wins");
-                    Log.i("DATABASE", "Wins data: " + wins[0]);
-                    firebaseIntCallback.onCallBack(wins[0]);
-
+                    Long wins;
+                    wins = (Long)document.getData().get("wins");
+                    Log.i("DATABASE", "Wins data: " + wins.intValue());
+                    firebaseIntCallback.onCallBack(wins.intValue());
                 } else {
                     Log.i("DATABASE", "No wins data");
                 }
             }
         });
     }
-    public void updateWins(User user, int wins) {
+    public void updateWins(String user, int wins) {
         int updatedWins = wins;
 
-        db.collection("users").document(user.getId()).update("wins", updatedWins).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user).update("wins", updatedWins).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.i("DATABASE", "Wins has been updated ");
@@ -259,12 +258,12 @@ public class Database {
             }
         });
     }
-    public void addLoss(User user){
+    public void addLoss(String user){
         getLosses(user, new FirebaseIntCallback() {
             @Override
             public void onCallBack(int losses) {
                 losses+=1;
-                db.collection("users").document(user.getId()).update("losses", losses).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("users").document(user).update("losses", losses).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Losses has been increased by 1");
@@ -279,27 +278,26 @@ public class Database {
             }
         });
     }
-    public void getLosses(User user, FirebaseIntCallback firebaseIntCallback) {
-        DocumentReference docRef = db.collection("users").document(user.getId());
-        final int[] losses = new int[1];
-
+    public void getLosses(String user, FirebaseIntCallback firebaseIntCallback) {
+        DocumentReference docRef = db.collection("users").document(user);
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
+                Long losses;
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    losses[0] = (int) document.getData().get("losses");
-                    Log.i("DATABASE", "Losses data: " + losses[0]);
-                    firebaseIntCallback.onCallBack(losses[0]);
+                    losses = (Long) document.getData().get("losses");
+                    Log.i("DATABASE", "Losses data: " + losses.intValue());
+                    firebaseIntCallback.onCallBack(losses.intValue());
                 } else {
                     Log.i("DATABASE", "No Losses data");
                 }
             }
         });
     }
-    public void updateLosses(User user, int losses) {
+    public void updateLosses(String user, int losses) {
         int updatedLosses = losses;
 
-        db.collection("users").document(user.getId()).update("losses", updatedLosses).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("users").document(user).update("losses", updatedLosses).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.i("DATABASE", "Losses has been updated ");
