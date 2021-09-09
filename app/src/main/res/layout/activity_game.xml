@@ -8,6 +8,7 @@
 
 
     <ImageView
+        android:id="@+id/gamebg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
@@ -104,7 +105,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.mobdeve.s18.cuevas.alfonso.legitcheckers.BoardView
+    <com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView
         android:id="@+id/board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
