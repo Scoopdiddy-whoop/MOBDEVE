@@ -40,21 +40,23 @@ public class Database {
         });
     }
 
-    public void addFriend(String user, String friendID){
+    public void addFriend(String user, String friendID, FirebaseBooleanCallback firebaseBooleanCallback){
         getFriendList(user, new FirebaseMapCallback() {
             @Override
-            public void onCallBack(Map<String, Object> map) {
-                map.put("friendID", friendID);
+            public void onCallBack(Map<String, String> map) {
+                map.put("friendID" + map.size() + 1, friendID);
                 db.collection("users").document(user).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Friend added to friend list");
+                        firebaseBooleanCallback.onCallBack(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.i("DATABASE", "Error adding friend", e);
+                        firebaseBooleanCallback.onCallBack(false);
                     }
                 });
             }
@@ -84,7 +86,7 @@ public class Database {
     }
     public void getFriendList(String user, FirebaseMapCallback firebaseMapCallback){
         DocumentReference docRef = db.collection("users").document(user);
-        final Map<String, Object>[] friendlist = new Map[1];
+        final Map<String, String>[] friendlist = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -100,10 +102,18 @@ public class Database {
             }
         });
     }
+    public void findFriend(String user, String friend, FirebaseBooleanCallback firebaseBooleanCallback){
+        getFriendList(user, new FirebaseMapCallback() {
+            @Override
+            public void onCallBack(Map<String, String> map) {
+               firebaseBooleanCallback.onCallBack(map.containsValue(user));
+            }
+        });
+    }
     public void addMatch(String user, String matchID){
         getMatches(user, new FirebaseMapCallback() {
             @Override
-            public void onCallBack(Map<String, Object> matches) {
+            public void onCallBack(Map<String, String> matches) {
                 matches.put("matchID",  matchID);
                 final boolean[] valid = new boolean[1];
                 db.collection("users").document(user).update("matches", matches).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -124,7 +134,7 @@ public class Database {
         });
     }
     public boolean updateMatches(String user, Map matches) {
-        Map<String, Object> updatedList = matches;
+        Map<String, String> updatedList = matches;
         final boolean[] valid = new boolean[1];
 
         db.collection("users").document(user).update("matches", updatedList).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -148,7 +158,7 @@ public class Database {
     }
     public Map getMatches(String user, FirebaseMapCallback firebaseMapCallback){
         DocumentReference docRef = db.collection("users").document(user);
-        final Map<String, Object>[] matches = new Map[1];
+        final Map<String, String>[] matches = new Map[1];
 
         docRef.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -312,13 +322,16 @@ public class Database {
         });
     }
     public interface FirebaseMapCallback{
-        void onCallBack(Map<String, Object> map);
+        void onCallBack(Map<String, String> map);
     }
     public interface FirebaseStringCallback{
         void onCallBack(String string);
     }
     public interface FirebaseIntCallback{
         void onCallBack(int number);
+    }
+    public interface FirebaseBooleanCallback{
+        void onCallBack(boolean bool);
     }
 }
 

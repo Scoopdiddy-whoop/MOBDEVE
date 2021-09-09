@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 openLoginDialog();
             }
         });
-        binding.btnHistory.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, HistoryActivity.class)));
+        binding.btnHistory.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+            finish();
+        });
+
         binding.btnSettings.setOnClickListener(v->{
             openSettingsDialog();
         });

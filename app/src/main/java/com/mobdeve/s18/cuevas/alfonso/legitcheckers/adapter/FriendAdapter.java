@@ -1,6 +1,8 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,32 +11,70 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.HistoryActivity;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.FriendModel;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 
 import java.util.ArrayList;
 
 
-public class FriendAdapter extends RecyclerView.Adapter{
+public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder>{
 
-    private ArrayList<FriendModel> friends;
+    private ArrayList<String> friends;
     private Context context;
 
-    public FriendAdapter(ArrayList<FriendModel> friends, Context context){
+    public FriendAdapter(ArrayList<String> friends, Context context){
         this.friends = friends;
         this.context = context;
+
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item,
-                parent, false);
-        FriendViewHolder friendViewHolder = new FriendViewHolder(view);
-        return null;
-    }
+    public void onBindViewHolder(FriendAdapter.FriendViewHolder holder, int position) {
+        Database db = new Database();
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        db.getUsername(friends.get(position), new Database.FirebaseStringCallback() {
+            @Override
+            public void onCallBack(String string) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                holder.tv_username.setText(string);
+
+                db.findFriend(user.getUid(), friends.get(position), new Database.FirebaseBooleanCallback() {
+                    @Override
+                    public void onCallBack(boolean bool) {
+                        //if friends
+                        if(bool){
+                            holder.btn_action.setText("VIEW");
+                            holder.btn_action.setOnClickListener(v ->{
+                                //CHECK IF THIS CODE IS CORRECT
+                                String friendID = friends.get(position);
+                                Intent intent = new Intent(context, HistoryActivity.class);
+                                intent.putExtra("friendID", friendID);
+                                context.startActivity(intent);
+                                ((Activity)context).finish();
+                            });
+                        }
+                        else{
+                            //WILL PROBABLY HAVE TO TRANSFER THIS TO SEARCHING FOR FRIEND
+                            holder.btn_action.setText("ADD");
+                            holder.btn_action.setOnClickListener(v->{
+                                db.addFriend(user.getUid(), friends.get(position), new Database.FirebaseBooleanCallback() {
+                                    @Override
+                                    public void onCallBack(boolean bool) {
+                                        if(true){
+                                            holder.btn_action.setText("VIEW");
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
@@ -42,6 +82,14 @@ public class FriendAdapter extends RecyclerView.Adapter{
     public int getItemCount() {
         return friends.size();
     }
+    @Override
+    public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_item,
+                parent, false);
+        FriendViewHolder friendViewHolder = new FriendViewHolder(view);
+        return friendViewHolder;
+    }
+
 //    @Override
 //    public void onBindViewHolder(com.mobdeve.s18.cuevas.alfonso.exercise2.adapter.PostAdapter.PostViewHolder holder, int position) {
 //        holder.tv_username_head.setText(arr_post.get(position).getUsername());
