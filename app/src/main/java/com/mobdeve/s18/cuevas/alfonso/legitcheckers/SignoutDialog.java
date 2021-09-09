@@ -16,7 +16,6 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 public class SignoutDialog extends AppCompatDialogFragment {
     private View view;
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.signout_dialog, null);
