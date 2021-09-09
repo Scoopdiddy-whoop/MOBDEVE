@@ -34,7 +34,6 @@ public class HistoryActivity extends AppCompatActivity {
         }
         else{
             loadProfile(friendID);
-
         }
 
     }
