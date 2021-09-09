@@ -2,6 +2,7 @@ package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +20,13 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        binding = ActivityHistoryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
         Intent intent = getIntent();
         String friendID = intent.getStringExtra("friendID");
 
@@ -35,7 +38,6 @@ public class HistoryActivity extends AppCompatActivity {
         else{
             loadProfile(friendID);
         }
-
     }
 
 
@@ -49,21 +51,27 @@ public class HistoryActivity extends AppCompatActivity {
             @Override
             public void onCallBack(int number) {
                 wins[0] = number;
+
+                db.getLosses(userID, new Database.FirebaseIntCallback() {
+                    @Override
+                    public void onCallBack(int number) {
+                        losses[0] = number;
+
+                        db.getUsername(userID, new Database.FirebaseStringCallback() {
+                            @Override
+                            public void onCallBack(String string) {
+                                username[0] = string;
+
+                                binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
+                                binding.textView3.setText(username[0]);
+                            }
+                        });
+                    }
+                });
             }
         });
-        db.getLosses(userID, new Database.FirebaseIntCallback() {
-            @Override
-            public void onCallBack(int number) {
-                losses[0] = number;
-            }
-        });
-        db.getUsername(userID, new Database.FirebaseStringCallback() {
-            @Override
-            public void onCallBack(String string) {
-                username[0] = string;
-            }
-        });
-        binding.textView2.setText("W"+wins[0]+"/L"+losses[0]);
-        binding.textView3.setText(username[0]);
+
+
+
     }
 }

@@ -150,7 +150,7 @@ public class RegisterDialog extends AppCompatDialogFragment {
             et_username.setError("Username cannot be empty");
             valid = false;
         }
-        else if(val.length()>=8) {
+        else if(val.length()<=8) {
             et_username.setError("Username must contain at least 8 characters");
             valid = false;
         }

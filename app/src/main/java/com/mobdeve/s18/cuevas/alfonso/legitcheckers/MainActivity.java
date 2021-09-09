@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
@@ -17,15 +16,15 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private FirebaseUser currUser;
+    private FirebaseAuth mAuth;
     private User userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("MAIN", "ONCREATE");
         FirebaseApp.initializeApp(this);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        currUser = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -34,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         setStanding();
         binding.btnLogin.setOnClickListener(v -> {
-            if(currUser != null) {
-                Log.i("LOGIN", "User currently logged in: " + mAuth.getCurrentUser().toString());
+            if(mAuth.getCurrentUser() != null) {
+                Log.i("MAIN", "User currently logged in: " + mAuth.getCurrentUser().toString());
                 openSignOutDialog();
             }
             else{
@@ -43,15 +42,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         binding.btnHistory.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, HistoryActivity.class));
-            finish();
+            if(mAuth.getCurrentUser() != null) {
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+                finish();
+            }
+            else{
+                openLoginDialog();
+            }
         });
 
         binding.btnSettings.setOnClickListener(v->{
             openSettingsDialog();
         });
         binding.btnFriend.setOnClickListener(v->{
-            openFriendsDialaog();
+            if(mAuth.getCurrentUser() != null) {
+                openFriendsDialaog();
+            }
+            else{
+                openLoginDialog();
+            }
         });
         binding.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,25 +80,31 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //
 //    }
+
     public void setStanding(){
         Database db = new Database();
         final int []wins = new int[1];
         final int []losses = new int[1];
-        db.getWins(currUser.getUid(), new Database.FirebaseIntCallback() {
-            @Override
-            public void onCallBack(int number) {
-                wins[0] = number;
-            }
-        });
 
-        db.getLosses(currUser.getUid(), new Database.FirebaseIntCallback() {
-            @Override
-            public void onCallBack(int number) {
-                losses[0] = number;
-            }
-        });
+        if(mAuth.getCurrentUser() != null) {
+            db.getWins(mAuth.getCurrentUser().getUid(), new Database.FirebaseIntCallback() {
+                @Override
+                public void onCallBack(int number) {
+                    wins[0] = number;
 
-        binding.tvStanding.setText("W"+wins[0]+"/L"+losses[0]);
+                    db.getLosses(mAuth.getCurrentUser().getUid(), new Database.FirebaseIntCallback() {
+                        @Override
+                        public void onCallBack(int number) {
+                            losses[0] = number;
+                            binding.tvStanding.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
+                        }
+                    });
+                }
+            });
+        }
+        else{
+            binding.tvStanding.setText("W0/L0");
+        }
     }
     public void openLoginDialog() {
         LoginDialog loginDialog = new LoginDialog();
