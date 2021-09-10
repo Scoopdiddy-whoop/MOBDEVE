@@ -41,6 +41,9 @@ public class Database {
     }
 
     public void addFriend(String user, String friendID, FirebaseBooleanCallback firebaseBooleanCallback){
+        if(user == friendID){
+            return;
+        }
         getFriendList(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, String> map) {
@@ -48,8 +51,13 @@ public class Database {
                 db.collection("users").document(user).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i("DATABASE", "Friend added to friend list");
                         firebaseBooleanCallback.onCallBack(true);
+                        addFriend(friendID, user, new FirebaseBooleanCallback() {
+                            @Override
+                            public void onCallBack(boolean bool) {
+                                Log.i("DATABASE", "Friend added to friend list");
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

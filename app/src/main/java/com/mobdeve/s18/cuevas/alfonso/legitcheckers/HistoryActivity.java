@@ -32,12 +32,13 @@ public class HistoryActivity extends AppCompatActivity {
 
         if(friendID==null){
             loadProfile(user.getUid());
-            Button btn = (Button)findViewById(R.id.return_home);
-            btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
         }
         else{
             loadProfile(friendID);
         }
+
+        Button btn = (Button)findViewById(R.id.return_home);
+        btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
     }
 
 

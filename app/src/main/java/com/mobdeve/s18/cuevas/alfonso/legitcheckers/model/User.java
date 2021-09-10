@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class User {
     private String id;
-    private Map<String, Object> friendlist;
-    private Map<String, Object> matches;
+    private Map<String, String> friendlist;
+    private Map<String, String> matches;
     private String username;
     private int wins;
     private int losses;
