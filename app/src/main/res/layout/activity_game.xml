@@ -114,7 +114,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container" />
 
-    <Button
+    <TextView
         android:id="@+id/player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,6 +126,7 @@
         android:layout_marginTop="30dp"
         android:shadowColor="@color/black"
         android:text="Player: 0"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:textSize="25sp"
         app:backgroundTint="@null"
@@ -134,7 +135,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/board"/>
 
-    <Button
+    <TextView
         android:id="@+id/enemy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,6 +147,7 @@
         android:layout_marginTop="30dp"
         android:shadowColor="@color/black"
         android:text="Enemy: 0"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:textSize="25sp"
         app:backgroundTint="@null"

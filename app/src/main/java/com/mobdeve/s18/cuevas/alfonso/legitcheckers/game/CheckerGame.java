@@ -14,6 +14,7 @@ import java.util.Set;
 public class CheckerGame {
     private static Set piecesBox;
     private static Player currentPlayer;
+    private static Player winningPlayer;
 
     public final void clear() {
         piecesBox.clear();
@@ -213,9 +214,12 @@ public class CheckerGame {
                     }
                 }
                 if(canEatRight(from)!=99){
-                    if(canEatLeft(from)==2)
+                    if(canEatRight(from)==2) {
+                        Log.i("TAG", "movePiece: KINGEATS");
                         val *= -1;
+                    }
                     if((from.getCol() + 2 == to.getCol()) && (from.getRow() + val + val) == to.getRow()) {
+                        Log.i("TAG", "movePiece: KINGEATS SUCCESSFULLY");
                         piecesBox.remove(pieceAt(from.getCol(), from.getRow()));
                         piecesBox.remove(pieceAt(from.getCol() + 1, from.getRow() + val));
                         if(isCurrKing)
@@ -231,11 +235,24 @@ public class CheckerGame {
                     else
                         currentPlayer = Player.BLACK;
                 }
+                else{
+                    Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
+                    if(!samePieceCanEat){
+                        if (currentPlayer == Player.BLACK)
+                            currentPlayer = Player.WHITE;
+                        else
+                            currentPlayer = Player.BLACK;
+                    }
+                }
             }
             else
                 currentPlayer = currentPlayer;
 
         }
+        if(getNumPieces(Player.BLACK)==0)
+            setWinningPlayer(Player.WHITE);
+        if(getNumPieces(Player.WHITE)==0)
+            setWinningPlayer(Player.BLACK);
         Log.i("TAG", "After Move: " + currentPlayer.toString());
     }
 
@@ -287,11 +304,36 @@ public class CheckerGame {
         return null;
     }
 
+    public int getNumPieces(Player player){
+        Iterator pieces= piecesBox.iterator();
+        CheckerPiece piece;
 
+        int nPieces=0;
+
+        do{
+
+            piece = (CheckerPiece)pieces.next();
+            if(piece.getPlayer() == player)
+                nPieces++;
+
+        }while(pieces.hasNext());
+
+        return nPieces;
+
+    }
+
+    public void setWinningPlayer(Player player){
+        winningPlayer = player;
+    }
+
+    public Player getWinningPlayer() {
+        return winningPlayer;
+    }
 
     public CheckerGame(){
         piecesBox = (new LinkedHashSet());
         currentPlayer = Player.WHITE;
+        winningPlayer = null;
         int row = 0;
         for (int i = 8; row < i; ++row) {
             int col = 0;
