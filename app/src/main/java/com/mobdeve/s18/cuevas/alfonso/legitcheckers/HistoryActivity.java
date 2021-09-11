@@ -6,9 +6,11 @@ import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.adapter.MatchAdapter;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityHistoryBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 
@@ -29,19 +31,27 @@ public class HistoryActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
-        Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
-        Intent intent = getIntent();
-        String friendID = intent.getStringExtra("friendID");
 
-        if(friendID==null){
-            loadProfile(user.getUid());
-        }
-        else{
-            loadProfile(friendID);
-        }
-
-        Button btn = (Button)findViewById(R.id.return_home);
-        btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
+        Database db = new Database();
+        String player1 = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
+        String player2 = "4oMulfPW3AT7fwofBPQnZTS3CeP2";
+        String winner = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
+        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+            @Override
+            public void onCallBack(boolean bool) {
+                Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
+                Intent intent = getIntent();
+                String friendID = intent.getStringExtra("friendID");
+                if(friendID==null){
+                    loadProfile(user.getUid());
+                }
+                else{
+                    loadProfile(friendID);
+                }
+                Button btn = (Button)findViewById(R.id.return_home);
+                btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
+            }
+        });
     }
 
 
@@ -65,16 +75,15 @@ public class HistoryActivity extends AppCompatActivity {
                             @Override
                             public void onCallBack(String string) {
                                 username[0] = string;
-
-                                binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
-                                binding.textView3.setText(username[0]);
-                                loadMatchHistory(userID);
-
                                 db.getMatches(userID, new Database.FirebaseMapCallback() {
                                     @Override
                                     public void onCallBack(Map<String, String> map) {
+                                        binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
+                                        binding.textView3.setText(username[0]);
                                         ArrayList<String> ids = new ArrayList<>(map.values());
-
+                                        MatchAdapter matchAdapter = new MatchAdapter(ids, getApplicationContext());
+                                        binding.rvMatches.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                        binding.rvMatches.setAdapter(matchAdapter);
                                     }
                                 });
                             }
@@ -84,12 +93,6 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-
-
-    }
-
-    private void loadMatchHistory(String userID) {
-        Database db = new Database();
 
 
     }

@@ -118,7 +118,7 @@ public class Database {
             }
         });
     }
-    public void addMatch(String user, String matchID){
+    public void addMatchToUser(String user, String matchID, FirebaseBooleanCallback firebaseBooleanCallback){
         getMatches(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, String> matches) {
@@ -129,6 +129,7 @@ public class Database {
                     public void onSuccess(Void aVoid) {
                         valid[0] = true;
                         Log.i("DATABASE", "Match added to match list");
+                        firebaseBooleanCallback.onCallBack(true);
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {
@@ -136,6 +137,7 @@ public class Database {
                     public void onFailure(@NonNull Exception e) {
                         valid[0] = false;
                         Log.i("DATABASE", "Error adding match", e);
+                        firebaseBooleanCallback.onCallBack(false);
                     }
                 });
             }
@@ -222,7 +224,7 @@ public class Database {
 
         return valid[0];
     }
-    public void addWin(String user) {
+    public void addWin(String user, FirebaseBooleanCallback firebaseBooleanCallback) {
         getWins(user, new FirebaseIntCallback() {
             @Override
             public void onCallBack(int wins) {
@@ -231,12 +233,14 @@ public class Database {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Wins has been increased by 1");
+                        firebaseBooleanCallback.onCallBack(true);
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.i("DATABASE", "Error adding to wins", e);
+                        firebaseBooleanCallback.onCallBack(false);
                     }
                 });
             }
@@ -276,7 +280,7 @@ public class Database {
             }
         });
     }
-    public void addLoss(String user){
+    public void addLoss(String user, FirebaseBooleanCallback firebaseBooleanCallback){
         getLosses(user, new FirebaseIntCallback() {
             @Override
             public void onCallBack(int losses) {
@@ -285,12 +289,14 @@ public class Database {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Losses has been increased by 1");
+                        firebaseBooleanCallback.onCallBack(true);
                     }
 
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.i("DATABASE", "Error adding to losses", e);
+                        firebaseBooleanCallback.onCallBack(false);
                     }
                 });
             }
@@ -368,6 +374,69 @@ public class Database {
                 } else {
                     Log.d("DATABASE", "No Match player2 data");
                 }
+            }
+        });
+    }
+    public void addMatchToDatabase(String player1, String player2, String winner, FirebaseBooleanCallback firebaseBooleanCallback) {
+        Map<String, String> data = new HashMap<>();
+        data.put("player1", player1);
+        data.put("player2", player2);
+        data.put("winner", winner);
+        db.collection("match").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.i("DATABASE", "MATCH ADDED TO DATABASE");
+                addMatchToUser(player1, documentReference.getId(), new FirebaseBooleanCallback() {
+                    @Override
+                    public void onCallBack(boolean bool) {
+                        addMatchToUser(player2, documentReference.getId(), new FirebaseBooleanCallback() {
+                            @Override
+                            public void onCallBack(boolean bool) {
+                                if(winner.equals(player1)){
+                                    addWin(player1, new FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                            addLoss(player2, new FirebaseBooleanCallback() {
+                                                @Override
+                                                public void onCallBack(boolean bool) {
+                                                    if(bool)
+                                                        firebaseBooleanCallback.onCallBack(true);
+                                                    else
+                                                        firebaseBooleanCallback.onCallBack(false);
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                }
+                                else{
+                                    addWin(player2, new FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                            addLoss(player1, new FirebaseBooleanCallback() {
+                                                @Override
+                                                public void onCallBack(boolean bool) {
+                                                    if(bool)
+                                                        firebaseBooleanCallback.onCallBack(true);
+                                                    else
+                                                        firebaseBooleanCallback.onCallBack(false);
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                }
+
+                            }
+                        });
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("DATABASE", "FAILED TO ADD MATCH");
+                firebaseBooleanCallback.onCallBack(false);
             }
         });
     }

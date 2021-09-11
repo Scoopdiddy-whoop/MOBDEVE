@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Database db = new Database();
 
         setStanding();
+
         binding.btnLogin.setOnClickListener(v -> {
             if(mAuth.getCurrentUser() != null) {
                 Log.i("MAIN", "User currently logged in: " + mAuth.getCurrentUser().toString());

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,17 +54,21 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
                                         db.getUsername(player2, new Database.FirebaseStringCallback() {
                                             @Override
                                             public void onCallBack(String usernameP2) {
-                                                if(user.getUid() == winner) {
+                                                Log.i("MATCH", "USERID: " + user.getUid());
+                                                Log.i("MATCH", "WINNER: " + winner);
+                                                Log.i("MATCH", "Player1: " + usernameP1);
+                                                Log.i("MATCH", "Player2: " + usernameP2);
+                                                if(user.getUid().equals(winner)) {
                                                     holder.tv_winner.setText("VICTORY");
                                                 }
                                                 else {
                                                     holder.tv_winner.setText("DEFEAT");
                                                 }
-                                                if(player1 == user.getUid()){
-                                                    holder.tv_opponent.setText(usernameP2);
+                                                if(player1.equals(user.getUid())){
+                                                    holder.tv_opponent.setText(new StringBuilder().append("vs ").append(usernameP2).toString());
                                                 }
                                                 else {
-                                                    holder.tv_opponent.setText(usernameP1);
+                                                    holder.tv_opponent.setText(new StringBuilder().append("vs").append(usernameP1).toString());
                                                 }
                                             }
                                         });
@@ -93,7 +96,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     protected class MatchViewHolder extends RecyclerView.ViewHolder {
         TextView tv_winner;
-        Button tv_opponent;
+        TextView tv_opponent;
 
         public MatchViewHolder(View view){
             super(view);
