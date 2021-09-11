@@ -6,10 +6,11 @@ public class Match {
     private String matchID;
     private String winner;
 
-    public Match(String matchID, String player1, String player2) {
-        idPlayer1 = player1;
-        idPlayer2 = player2;
+    public Match(String idPlayer1, String idPlayer2, String matchID, String winner) {
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
         this.matchID = matchID;
+        this.winner = winner;
     }
 
     public String getIdPlayer1() {

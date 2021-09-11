@@ -12,6 +12,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityHistoryBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class HistoryActivity extends AppCompatActivity {
 
     private ActivityHistoryBinding binding;
@@ -65,6 +68,15 @@ public class HistoryActivity extends AppCompatActivity {
 
                                 binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
                                 binding.textView3.setText(username[0]);
+                                loadMatchHistory(userID);
+
+                                db.getMatches(userID, new Database.FirebaseMapCallback() {
+                                    @Override
+                                    public void onCallBack(Map<String, String> map) {
+                                        ArrayList<String> ids = new ArrayList<>(map.values());
+
+                                    }
+                                });
                             }
                         });
                     }
@@ -72,6 +84,12 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    private void loadMatchHistory(String userID) {
+        Database db = new Database();
 
 
     }

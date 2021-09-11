@@ -122,7 +122,7 @@ public class Database {
         getMatches(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, String> matches) {
-                matches.put("matchID",  matchID);
+                matches.put("matchID" + matches.size() + 1,  matchID);
                 final boolean[] valid = new boolean[1];
                 db.collection("users").document(user).update("matches", matches).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -329,6 +329,49 @@ public class Database {
             }
         });
     }
+    public void getMatchWinner(String matchID, FirebaseStringCallback firebaseStringCallback){
+        DocumentReference docRef = db.collection("match").document(matchID);
+        docRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d("DATABASE", "Match winner data: " + (String) document.getData().get("winner"));
+                    firebaseStringCallback.onCallBack((String) document.getData().get("winner"));
+                } else {
+                    Log.d("DATABASE", "No Match winner data");
+                }
+            }
+        });
+    }
+    public void getMatchPlayer1(String matchID, FirebaseStringCallback firebaseStringCallback){
+        DocumentReference docRef = db.collection("match").document(matchID);
+        docRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d("DATABASE", "Match player1 data: " + (String) document.getData().get("player1"));
+                    firebaseStringCallback.onCallBack((String) document.getData().get("player1"));
+                } else {
+                    Log.d("DATABASE", "No Match player1 data");
+                }
+            }
+        });
+    }
+    public void getMatchPlayer2(String matchID, FirebaseStringCallback firebaseStringCallback){
+        DocumentReference docRef = db.collection("match").document(matchID);
+        docRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d("DATABASE", "Match player2 data: " + (String) document.getData().get("player2"));
+                    firebaseStringCallback.onCallBack((String) document.getData().get("player2"));
+                } else {
+                    Log.d("DATABASE", "No Match player2 data");
+                }
+            }
+        });
+    }
+
     public interface FirebaseMapCallback{
         void onCallBack(Map<String, String> map);
     }
