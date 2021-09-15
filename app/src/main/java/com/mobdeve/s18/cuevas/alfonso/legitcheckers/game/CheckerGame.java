@@ -1,17 +1,14 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers.game;
 
-import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.Log;
-
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class CheckerGame {
+
+
     private static Set piecesBox;
     private static Player currentPlayer;
     private static Player winningPlayer;
@@ -20,6 +17,12 @@ public class CheckerGame {
         piecesBox.clear();
     }
 
+    public static Set getPiecesBox() {
+        return piecesBox;
+    }
+    public static void setPiecesBox(Set piecesBox) {
+        CheckerGame.piecesBox = piecesBox;
+    }
     public boolean canMove(Square from, Square to){
         int colDist, rowDist;
         boolean colValid, rowValid;
