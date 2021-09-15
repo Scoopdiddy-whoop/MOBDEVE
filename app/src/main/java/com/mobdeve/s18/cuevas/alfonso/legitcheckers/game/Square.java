@@ -1,4 +1,4 @@
-package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
+package com.mobdeve.s18.cuevas.alfonso.legitcheckers.game;
 
 public class Square {
 

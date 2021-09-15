@@ -34,7 +34,13 @@ public class MenuDialog extends AppCompatDialogFragment {
 
         btn_resume.setOnClickListener(v -> this.dismiss());
         btn_quit.setOnClickListener(v -> startActivity(new Intent(mContext, MainActivity.class)));
+        btn_settings.setOnClickListener(v-> {openSettings();});
 
         return builder.create();
+    }
+
+    public void openSettings() {
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.show(getChildFragmentManager(),"settings");
     }
 }

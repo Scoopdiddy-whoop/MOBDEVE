@@ -5,18 +5,41 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+
+
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
+
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
+
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+
+    private StoragePreferences storagePreferences;
+    private boolean playBGmusic = true;
+    private boolean nightMode = false;
+    private Intent musicIntent;
+    private ImageView background;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        storagePreferences = new StoragePreferences(getApplicationContext());
+
+
     private FirebaseAuth mAuth;
     private User userModel;
     private FirebaseDatabase mDb;
@@ -25,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("MAIN", "ONCREATE");
+
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -86,12 +110,51 @@ public class MainActivity extends AppCompatActivity {
                 openLoginDialog();
             }
         });
+
+
+        background = findViewById(R.id.homebg);
+
+
         binding.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, PlayOnline.class));
             }
         });
+
+        musicIntent = new Intent(MainActivity.this, BackgroundSoundService.class);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        playBGmusic = storagePreferences.getMusicPreferences("Play");
+        nightMode = storagePreferences.getThemePreferences("Theme");
+        Log.i("TAG", "MainActivity:" + playBGmusic);
+        if(playBGmusic)
+            startService(musicIntent);
+        if(nightMode)
+            background.setImageResource(R.drawable.nightbg);
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        playBGmusic = storagePreferences.getMusicPreferences("Play");
+        Log.i("TAG", "MainActivityOnResume:" + playBGmusic);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        storagePreferences.saveMusicPreferences("Play", playBGmusic);
+        storagePreferences.saveThemePreferences("Theme", nightMode);
+        Log.i("TAG", "MainActivityOnDestroy:" + playBGmusic);
+        stopService(musicIntent);
+
     }
 //    public void createUserModel(){
 //        Database db = new Database();
