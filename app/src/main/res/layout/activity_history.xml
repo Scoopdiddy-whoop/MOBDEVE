@@ -75,9 +75,9 @@
         android:layout_height="76dp"
         android:gravity="center"
         android:background="@drawable/rounded_corners5"
-        android:text="W 3 / L 0"
+        android:text="W3/L0"
         android:fontFamily="@font/lilitiaone"
-        android:letterSpacing="0.05"
+        android:letterSpacing="0.3"
         android:shadowColor="@color/head_blue"
         android:shadowDx="4"
         android:shadowDy="4"
@@ -135,8 +135,8 @@
                 android:layout_marginBottom="40dp"
                 >
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_singlematch"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rv_matches"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"

@@ -98,6 +98,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@drawable/rounded_edit"
             android:textSize="25sp"
+            android:inputType="textPassword"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             />

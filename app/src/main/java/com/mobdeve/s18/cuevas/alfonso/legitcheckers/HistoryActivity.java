@@ -9,23 +9,103 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.adapter.MatchAdapter;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityHistoryBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
+
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
 
     private ActivityHistoryBinding binding;
+
 
     private StoragePreferences storagePreferences;
     private boolean playBGmusic = true;
     private boolean nightMode = false;
     private Intent musicIntent;
     private ImageView background;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-           setContentView(R.layout.activity_history);
+        binding = ActivityHistoryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+
+        Database db = new Database();
+        String player1 = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
+        String player2 = "4oMulfPW3AT7fwofBPQnZTS3CeP2";
+        String winner = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
+        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+            @Override
+            public void onCallBack(boolean bool) {
+                Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
+                Intent intent = getIntent();
+                String friendID = intent.getStringExtra("friendID");
+                if(friendID==null){
+                    loadProfile(user.getUid());
+                }
+                else{
+                    loadProfile(friendID);
+                }
+                Button btn = (Button)findViewById(R.id.return_home);
+                btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
+            }
+        });
+    }
+
+
+    private void loadProfile(String userID) {
+        Database db = new Database();
+        final int []wins = new int[1];
+        final int []losses = new int[1];
+        final String[] username = new String[1];
+
+        db.getWins(userID, new Database.FirebaseIntCallback() {
+            @Override
+            public void onCallBack(int number) {
+                wins[0] = number;
+
+                db.getLosses(userID, new Database.FirebaseIntCallback() {
+                    @Override
+                    public void onCallBack(int number) {
+                        losses[0] = number;
+
+                        db.getUsername(userID, new Database.FirebaseStringCallback() {
+                            @Override
+                            public void onCallBack(String string) {
+                                username[0] = string;
+                                db.getMatches(userID, new Database.FirebaseMapCallback() {
+                                    @Override
+                                    public void onCallBack(Map<String, String> map) {
+                                        binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
+                                        binding.textView3.setText(username[0]);
+                                        ArrayList<String> ids = new ArrayList<>(map.values());
+                                        MatchAdapter matchAdapter = new MatchAdapter(ids, getApplicationContext());
+                                        binding.rvMatches.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                                        binding.rvMatches.setAdapter(matchAdapter);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+
 
         storagePreferences = new StoragePreferences(getApplicationContext());
 
@@ -57,5 +137,6 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //stopService(musicIntent);
+
     }
 }
