@@ -2,12 +2,8 @@ package com.mobdeve.s18.cuevas.alfonso.legitcheckers.game;
 
 import android.util.Log;
 
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class CheckerGame {
     private static ArrayList piecesBox;
@@ -18,10 +14,10 @@ public class CheckerGame {
         piecesBox.clear();
     }
 
-    public static Set getPiecesBox() {
+    public static ArrayList getPiecesBox() {
         return piecesBox;
     }
-    public static void setPiecesBox(Set piecesBox) {
+    public static void setPiecesBox(ArrayList piecesBox) {
         CheckerGame.piecesBox = piecesBox;
     }
     public boolean canMove(Square from, Square to){

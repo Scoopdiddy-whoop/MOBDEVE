@@ -9,8 +9,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityGameBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerGame;
@@ -34,7 +39,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private TextView playerScore;
     private TextView enemyScore;
     private FirebaseDatabase firebaseDatabase;
-
+    private DatabaseReference roomRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +54,29 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         String roomName = getIntent().getStringExtra("roomName");
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
-        DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
-
-
-        ArrayList<String> egulsayovalmo = new ArrayList<>();
+        roomRef = firebaseDatabase.getReference("rooms/"+roomName);
 
         if(status.equals("host")){
-            roomRef.child("boxes").setValue(egulsayovalmo);
+            roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
+            setup();
+        }
+        else{
+            roomRef.child("boxes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue()));
+                        setup();
+                    }
+                    else {
+                        Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue()));
+                    }
+                }
+            });
         }
 
-
-
+    }
+    public void setup(){
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
 
@@ -71,6 +88,18 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             openMenuDialog();
         });
 
+        roomRef.child("board").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange( DataSnapshot snapshot) {
+                CheckerGame.setPiecesBox((ArrayList)snapshot.getValue());
+                Log.i("GAME ACTIVITY", snapshot.toString());
+                boardView.invalidate();
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -116,12 +145,15 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     public void movePiece(Square from, Square to) {
         checkerGame.movePiece(from, to);
 
+        roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
+
         enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces(Player.WHITE)));
         playerScore.setText("Player: " + (12 - checkerGame.getNumPieces(Player.BLACK)));
         if(checkerGame.getWinningPlayer()!=null) {
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             openWinnerDialog();
         }
+
         boardView.invalidate();
     }
     
