@@ -4,24 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 
-
 import androidx.appcompat.app.AppCompatActivity;
-
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
-
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
-
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,12 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean nightMode = false;
     private Intent musicIntent;
     private ImageView background;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        storagePreferences = new StoragePreferences(getApplicationContext());
-
 
     private FirebaseAuth mAuth;
     private User userModel;
@@ -53,29 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
-//        DatabaseReference myRef = database.getReference("message");
-//        myRef.setValue("Hello, World!").addOnFailureListener(MainActivity.this, new OnFailureListener() {
-//            @Override
-//            public void onFailure( Exception e) {
-//                Log.i("MAIN", "FAILED: " +e.toString());
-//            }
-//        }).addOnCanceledListener(MainActivity.this, new OnCanceledListener() {
-//            @Override
-//            public void onCanceled() {
-//                Log.i("MAIN", "FAILED: ");
-//            }
-//        });
-//
-//        if(myRef.setValue("Hello, World!").isSuccessful()){
-//            Log.i("MAIN", "s");
-//        }
-//        else{
-//            Log.i("MAIN", "e");
-//        }
-//
-//        Log.i("MAIN", myRef.toString());
+        storagePreferences = new StoragePreferences(getApplicationContext());
 
         Database db = new Database();
         setStanding();
@@ -110,11 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 openLoginDialog();
             }
         });
-
-
-        background = findViewById(R.id.homebg);
-
-
         binding.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        background = findViewById(R.id.homebg);
         musicIntent = new Intent(MainActivity.this, BackgroundSoundService.class);
     }
 
