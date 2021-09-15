@@ -56,7 +56,7 @@
         android:text="Create room"
         android:fontFamily="@font/lilitiaone"
         android:background="@color/head_blue"
-        app:backgroundTint="null"
+        app:backgroundTint="@null"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

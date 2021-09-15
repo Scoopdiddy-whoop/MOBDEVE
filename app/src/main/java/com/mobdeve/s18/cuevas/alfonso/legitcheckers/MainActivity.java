@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityMainBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.User;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private User userModel;
+    private FirebaseDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +27,33 @@ public class MainActivity extends AppCompatActivity {
         Log.i("MAIN", "ONCREATE");
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Database db = new Database();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+//        DatabaseReference myRef = database.getReference("message");
+//        myRef.setValue("Hello, World!").addOnFailureListener(MainActivity.this, new OnFailureListener() {
+//            @Override
+//            public void onFailure( Exception e) {
+//                Log.i("MAIN", "FAILED: " +e.toString());
+//            }
+//        }).addOnCanceledListener(MainActivity.this, new OnCanceledListener() {
+//            @Override
+//            public void onCanceled() {
+//                Log.i("MAIN", "FAILED: ");
+//            }
+//        });
+//
+//        if(myRef.setValue("Hello, World!").isSuccessful()){
+//            Log.i("MAIN", "s");
+//        }
+//        else{
+//            Log.i("MAIN", "e");
+//        }
+//
+//        Log.i("MAIN", myRef.toString());
 
+        Database db = new Database();
         setStanding();
 
         binding.btnLogin.setOnClickListener(v -> {
@@ -66,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, GameActivity.class));
+                startActivity(new Intent(MainActivity.this, PlayOnline.class));
             }
         });
     }

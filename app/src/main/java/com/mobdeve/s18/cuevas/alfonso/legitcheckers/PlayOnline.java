@@ -2,6 +2,7 @@ package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,7 +22,7 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 
 import java.util.ArrayList;
 
-public class PlayOnline extends AppCompatActivity {
+public class  PlayOnline extends AppCompatActivity {
 
     private ActivityRoomBinding binding;
     private FirebaseDatabase firebaseDatabase;
@@ -37,8 +38,9 @@ public class PlayOnline extends AppCompatActivity {
         binding = ActivityRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
         mAuth = FirebaseAuth.getInstance();
+        roomList = new ArrayList<>();
 
         Database db = new Database();
 
@@ -51,11 +53,11 @@ public class PlayOnline extends AppCompatActivity {
     }
     public void roomAction(String username){
         binding.btnCreateRoom.setOnClickListener(v -> {
-            roomName = username;
-            roomList = new ArrayList<>();
+                roomName = username;
             binding.btnCreateRoom.setText("CREATING ROOM");
             binding.btnCreateRoom.setEnabled(false);
             roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player1");
+            Log.i("ROOM ACTION", "ROOM CREATED");
             addRoomEventListener();
             roomRef.setValue(username);
         });
@@ -63,9 +65,10 @@ public class PlayOnline extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 roomName = roomList.get(position);
-                roomRef = firebaseDatabase.getReference("rooms/"+roomName+"player2");
+                roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player2");
                 addRoomEventListener();
                 roomRef.setValue(username);
+                Log.i("ROOM ACTION", "ROOM JOINED");
             }
         });
         //show new rooms
@@ -99,10 +102,12 @@ public class PlayOnline extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roomList.clear();
                 Iterable<DataSnapshot> rooms = dataSnapshot.getChildren();
+                Log.i("ADD ROOMS", "ROOMS ADDED");
                 for(DataSnapshot snapshot : rooms) {
                     roomList.add(snapshot.getKey());
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(PlayOnline.this,
                             android.R.layout.simple_list_item_1, roomList);
+                    Log.i("ADD ROOMS", "ROOM:" + roomList.get(0));
                     binding.lvRoom.setAdapter(adapter);
                 }
 
