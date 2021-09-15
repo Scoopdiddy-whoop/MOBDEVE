@@ -20,7 +20,6 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityGameBind
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerGame;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerPiece;
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Player;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Square;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
@@ -147,9 +146,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
 
-        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces(new Player("White"))));
-        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces(new Player("Black"))));
-        if(checkerGame.getWinningPlayer()!=null) {
+        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
+        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
+        if(checkerGame.getWinningPlayer()!="None") {
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             openWinnerDialog();
         }
