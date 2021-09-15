@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityGameBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerGame;
@@ -16,6 +18,8 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerPiece;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Player;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Square;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
+
+import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity implements PiecePosition {
 
@@ -29,6 +33,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private BoardView boardView;
     private TextView playerScore;
     private TextView enemyScore;
+    private FirebaseDatabase firebaseDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +43,26 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         storagePreferences = new StoragePreferences(getApplicationContext());
         background = findViewById(R.id.gamebg);
+
         checkerGame = new CheckerGame();
+        String status = getIntent().getStringExtra("status");
+        String roomName = getIntent().getStringExtra("roomName");
+
+        firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
+
+
+        ArrayList<String> egulsayovalmo = new ArrayList<>();
+
+        if(status.equals("host")){
+            roomRef.child("boxes").setValue(egulsayovalmo);
+        }
+
+
+
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
+
         playerScore = findViewById(R.id.player);
         enemyScore = findViewById(R.id.enemy);
         ImageButton btn = findViewById(R.id.btn_menu);

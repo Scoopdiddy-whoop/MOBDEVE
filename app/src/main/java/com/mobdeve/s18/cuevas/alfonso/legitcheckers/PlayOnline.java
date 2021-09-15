@@ -57,16 +57,21 @@ public class  PlayOnline extends AppCompatActivity {
             binding.btnCreateRoom.setText("CREATING ROOM");
             binding.btnCreateRoom.setEnabled(false);
             roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player1");
+
             Log.i("ROOM ACTION", "ROOM CREATED");
-            addRoomEventListener();
+
+            addRoomEventListener("host");
             roomRef.setValue(username);
+            DatabaseReference dr = firebaseDatabase.getReference("rooms/"+roomName+"/turn");
+            dr.setValue("WHITE");
+
         });
         binding.lvRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 roomName = roomList.get(position);
                 roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player2");
-                addRoomEventListener();
+                addRoomEventListener("guest");
                 roomRef.setValue(username);
                 Log.i("ROOM ACTION", "ROOM JOINED");
             }
@@ -74,7 +79,7 @@ public class  PlayOnline extends AppCompatActivity {
         //show new rooms
         addRoomsEventListener();
     }
-    public void addRoomEventListener() {
+    public void addRoomEventListener(String status) {
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -83,6 +88,7 @@ public class  PlayOnline extends AppCompatActivity {
                 binding.btnCreateRoom.setEnabled(true);
                 Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                 intent.putExtra("roomName", roomName);
+                intent.putExtra("status", status);
                 startActivity(intent);
             }
 

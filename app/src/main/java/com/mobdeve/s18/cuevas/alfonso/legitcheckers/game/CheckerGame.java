@@ -1,8 +1,5 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers.game;
 
-import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.Log;
 
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
@@ -21,6 +18,12 @@ public class CheckerGame {
         piecesBox.clear();
     }
 
+    public static Set getPiecesBox() {
+        return piecesBox;
+    }
+    public static void setPiecesBox(Set piecesBox) {
+        CheckerGame.piecesBox = piecesBox;
+    }
     public boolean canMove(Square from, Square to){
         int colDist, rowDist;
         boolean colValid, rowValid;
