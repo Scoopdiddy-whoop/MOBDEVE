@@ -1,10 +1,8 @@
 package com.mobdeve.s18.cuevas.alfonso.legitcheckers;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -15,9 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.adapter.MatchAdapter;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityHistoryBinding;
-import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
-
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -42,6 +39,14 @@ public class HistoryActivity extends AppCompatActivity {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+
+        storagePreferences = new StoragePreferences(getApplicationContext());
+        Button btn = (Button)findViewById(R.id.return_home);
+        background = findViewById(R.id.matchbg);
+
+        btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
+
+        musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
 
 
         Database db = new Database();
@@ -106,15 +111,6 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
 
-
-        storagePreferences = new StoragePreferences(getApplicationContext());
-
-        Button btn = (Button)findViewById(R.id.return_home);
-        background = findViewById(R.id.matchbg);
-
-        btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
-
-        musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
     }
 
     @Override

@@ -14,10 +14,10 @@ public class CheckerGame {
         piecesBox.clear();
     }
 
-    public static ArrayList getPiecesBox() {
+    public static ArrayList<CheckerPiece> getPiecesBox() {
         return piecesBox;
     }
-    public static void setPiecesBox(ArrayList piecesBox) {
+    public static void setPiecesBox(ArrayList<CheckerPiece> piecesBox) {
         CheckerGame.piecesBox = piecesBox;
     }
     public boolean canMove(Square from, Square to){

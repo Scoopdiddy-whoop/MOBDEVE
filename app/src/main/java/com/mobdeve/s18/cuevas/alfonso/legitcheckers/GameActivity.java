@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,8 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Square;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity implements PiecePosition {
 
@@ -56,7 +59,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         roomRef = firebaseDatabase.getReference("rooms/"+roomName);
 
         if(status.equals("host")){
+            Log.i("GAMEACTIVITY", "HAHATDOG");
             roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
+
             setup();
         }
         else{
@@ -65,6 +70,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 public void onComplete(Task<DataSnapshot> task) {
                     if (task.isSuccessful()) {
                         Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue()));
+
+//                        CheckerGame.setPiecesBox( task.getResult().getValue(CheckerPiece.class));
                         setup();
                     }
                     else {
@@ -86,12 +93,23 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         btn.setOnClickListener(v -> {
             openMenuDialog();
         });
-
-        roomRef.child("board").addValueEventListener(new ValueEventListener() {
+        roomRef.child("boxes").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange( DataSnapshot snapshot) {
-                CheckerGame.setPiecesBox((ArrayList)snapshot.getValue());
-                Log.i("GAME ACTIVITY", snapshot.toString());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<CheckerPiece> bd = new ArrayList<>();
+                Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
+                for(DataSnapshot snapshot : pieces) {
+                    String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
+                    int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
+                    int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
+                    boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
+
+                    CheckerPiece cp = new CheckerPiece(col,row,player,king);
+                    bd.add(cp);
+                }
+                Log.i("GAME", "NUM: "+ bd.size());
+                CheckerGame.setPiecesBox(bd);
+                Log.i("GAME ACTIVITY", CheckerGame.getPiecesBox().toString());
                 boardView.invalidate();
             }
             @Override
