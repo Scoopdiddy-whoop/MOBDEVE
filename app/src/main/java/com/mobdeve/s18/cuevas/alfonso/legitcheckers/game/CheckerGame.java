@@ -7,12 +7,13 @@ import android.util.Log;
 
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class CheckerGame {
-    private static Set piecesBox;
+    private static ArrayList piecesBox;
     private static Player currentPlayer;
     private static Player winningPlayer;
 
@@ -331,7 +332,7 @@ public class CheckerGame {
     }
 
     public CheckerGame(){
-        piecesBox = (new LinkedHashSet());
+        piecesBox = new ArrayList<CheckerPiece>();
         currentPlayer = Player.WHITE;
         winningPlayer = null;
         int row = 0;
