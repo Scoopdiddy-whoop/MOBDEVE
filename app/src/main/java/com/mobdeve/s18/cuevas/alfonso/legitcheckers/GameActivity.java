@@ -147,8 +147,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
 
-        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces(Player.WHITE)));
-        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces(Player.BLACK)));
+        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces(new Player("White"))));
+        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces(new Player("Black"))));
         if(checkerGame.getWinningPlayer()!=null) {
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             openWinnerDialog();

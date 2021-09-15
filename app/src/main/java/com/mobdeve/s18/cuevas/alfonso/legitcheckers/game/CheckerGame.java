@@ -36,7 +36,7 @@ public class CheckerGame {
             rowValid = ((rowDist==1) || (rowDist==-1));
         }
         else {
-            if (pieceAt(from.getCol(), from.getRow()).getPlayer() == Player.BLACK) {
+            if (pieceAt(from.getCol(), from.getRow()).getPlayer().getColor() == "Black") {
                 rowValid = (rowDist == -1);
                 Log.i("TAG", "rowValidBLACK: " + rowValid);
             }
@@ -65,9 +65,9 @@ public class CheckerGame {
     }
 
     public boolean turnKing(Square to){
-        if(currentPlayer == Player.WHITE && to.getRow() == 0)
+        if(currentPlayer.getColor() == "White" && to.getRow() == 0)
             return true;
-        if(currentPlayer == Player.BLACK && to.getRow() == 7)
+        if(currentPlayer.getColor() == "Black" && to.getRow() == 7)
             return true;
         return false;
     }
@@ -76,7 +76,7 @@ public class CheckerGame {
 
         int val;
         CheckerPiece pieceAtRight;
-        if(currentPlayer == Player.BLACK)
+        if(currentPlayer.getColor() == "Black")
             val = 1;
         else
             val = -1;
@@ -122,7 +122,7 @@ public class CheckerGame {
 
         int val;
         CheckerPiece pieceAtLeft;
-        if(currentPlayer == Player.BLACK)
+        if(currentPlayer.getColor() == "Black")
             val = 1;
         else
             val = -1;
@@ -176,7 +176,7 @@ public class CheckerGame {
     public void movePiece(Square from, Square to) {
         int val;
         boolean isCurrKing =  pieceAt(from.getCol(), from.getRow()).isKing();
-        if(currentPlayer == Player.BLACK)
+        if(currentPlayer.getColor() == "Black")
             val = 1;
         else
             val = -1;
@@ -193,10 +193,10 @@ public class CheckerGame {
                         addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, true));
                     else
                         addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, turnKing(to)));
-                    if (currentPlayer == Player.BLACK)
-                        currentPlayer = Player.WHITE;
+                    if (currentPlayer.getColor() == "Black")
+                        currentPlayer.setColor("White");
                     else
-                        currentPlayer = Player.BLACK;
+                        currentPlayer.setColor("Black");
                 }
             }
             else if (pieceEater != null && pieceEater == pieceAt(from.getCol(), from.getRow())){
@@ -230,18 +230,18 @@ public class CheckerGame {
                 }
 
                 if (availEat() == null){
-                    if (currentPlayer == Player.BLACK)
-                        currentPlayer = Player.WHITE;
+                    if (currentPlayer.getColor() == "Black")
+                        currentPlayer.setColor("White");
                     else
-                        currentPlayer = Player.BLACK;
+                        currentPlayer.setColor("Black");
                 }
                 else{
                     Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
                     if(!samePieceCanEat){
-                        if (currentPlayer == Player.BLACK)
-                            currentPlayer = Player.WHITE;
+                        if (currentPlayer.getColor() == "Black")
+                            currentPlayer.setColor("White");
                         else
-                            currentPlayer = Player.BLACK;
+                            currentPlayer.setColor("Black");
                     }
                 }
             }
@@ -249,10 +249,10 @@ public class CheckerGame {
                 currentPlayer = currentPlayer;
 
         }
-        if(getNumPieces(Player.BLACK)==0)
-            setWinningPlayer(Player.WHITE);
-        if(getNumPieces(Player.WHITE)==0)
-            setWinningPlayer(Player.BLACK);
+        if(getNumPieces(new Player("Black"))==0)
+            setWinningPlayer(new Player("White"));
+        if(getNumPieces(new Player("White"))==0)
+            setWinningPlayer(new Player("Black"));
         Log.i("TAG", "After Move: " + currentPlayer.toString());
     }
 
@@ -269,12 +269,12 @@ public class CheckerGame {
                 boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
                 if (row < 3) {
                     if (positions)
-                        this.addPiece(new CheckerPiece(col, row, Player.WHITE, false));
+                        this.addPiece(new CheckerPiece(col, row, new Player("Black"), false));
                 }
 
                 if (row > 4) {
                     if (positions)
-                        this.addPiece(new CheckerPiece(col, row, Player.BLACK, false));
+                        this.addPiece(new CheckerPiece(col, row, new Player("White"), false));
                 }
             }
         }
@@ -332,7 +332,7 @@ public class CheckerGame {
 
     public CheckerGame(){
         piecesBox = new ArrayList<CheckerPiece>();
-        currentPlayer = Player.WHITE;
+        currentPlayer = new Player("White");
         winningPlayer = null;
         int row = 0;
         for (int i = 8; row < i; ++row) {
@@ -341,13 +341,13 @@ public class CheckerGame {
                 boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
                 if (row < 3) {
                     if (positions) {
-                        this.addPiece(new CheckerPiece(col, row, Player.BLACK, false));
+                        this.addPiece(new CheckerPiece(col, row, new Player("Black"), false));
                     }
                 }
 
                 if (row > 4) {
                     if (positions)
-                        this.addPiece(new CheckerPiece(col, row, Player.WHITE, false));
+                        this.addPiece(new CheckerPiece(col, row, new Player("White"), false));
                 }
             }
         };

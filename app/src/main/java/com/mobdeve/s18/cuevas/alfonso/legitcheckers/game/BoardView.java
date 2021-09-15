@@ -84,7 +84,7 @@ public class BoardView extends View {
                         Log.i("TAG", "piecePosition NULL");
                     }
                     else{
-                        if (temp.getPlayer() == Player.BLACK)
+                        if (temp.getPlayer().getColor() == "Black")
                             this.movingPieceBitmap = (Bitmap) this.bitmaps.get(R.drawable.red_piece);
                         else
                             this.movingPieceBitmap = (Bitmap) this.bitmaps.get(R.drawable.cream_piece);
@@ -137,9 +137,9 @@ public class BoardView extends View {
             for(int j = 8; col < j; ++col) {
                 CheckerPiece piece = this.piecePosition.pieceAt(new Square(col, row));
                 if(piece!=null){
-                    if(piece.getPlayer() == Player.BLACK)
+                    if(piece.getPlayer().getColor() == "Black")
                         drawPieceAt(canvas,col,row,(Bitmap)this.bitmaps.get(R.drawable.red_piece));
-                    if(piece.getPlayer() == Player.WHITE)
+                    if(piece.getPlayer().getColor() == "White")
                         drawPieceAt(canvas,col,row,(Bitmap)this.bitmaps.get(R.drawable.cream_piece));
                 }
             }
