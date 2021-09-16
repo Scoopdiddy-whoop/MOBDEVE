@@ -84,12 +84,14 @@ public class  PlayOnline extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //join the room
+                Log.i("PLAYONLINE", status +" " + "ENTERED");
                 binding.btnCreateRoom.setText("CREATE ROOM");
                 binding.btnCreateRoom.setEnabled(true);
                 Intent intent = new Intent(getApplicationContext(), GameActivity.class);
                 intent.putExtra("roomName", roomName);
                 intent.putExtra("status", status);
                 startActivity(intent);
+
             }
 
             @Override

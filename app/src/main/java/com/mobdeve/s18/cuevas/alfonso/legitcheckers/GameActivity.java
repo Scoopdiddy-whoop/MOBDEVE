@@ -57,11 +57,12 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
         roomRef = firebaseDatabase.getReference("rooms/"+roomName);
+        Log.i("GAMEACTIVITY", "ON CREATE");
 
         if(status.equals("host")){
             Log.i("GAMEACTIVITY", "HAHATDOG");
             roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
-
+            Log.i("GAMEACTIVITY", "HOST");
             setup();
         }
         else{
@@ -69,13 +70,24 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 @Override
                 public void onComplete(Task<DataSnapshot> task) {
                     if (task.isSuccessful()) {
-                        Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue()));
+                        DataSnapshot dataSnapshot = task.getResult();
+                        ArrayList<CheckerPiece> bd = new ArrayList<>();
+                        Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
 
-//                        CheckerGame.setPiecesBox( task.getResult().getValue(CheckerPiece.class));
+                        for(DataSnapshot snapshot : pieces) {
+                            String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
+                            int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
+                            int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
+                            boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
+
+                            CheckerPiece cp = new CheckerPiece(col,row,player,king);
+                            bd.add(cp);
+                        }
+                        CheckerGame.setPiecesBox(bd);
                         setup();
                     }
                     else {
-                        Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue()));
+                        Log.i("GAMEACTIVITY", String.valueOf(task.getResult().getValue())+"working not complete");
                     }
                 }
             });
@@ -85,7 +97,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     public void setup(){
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
-
         playerScore = findViewById(R.id.player);
         enemyScore = findViewById(R.id.enemy);
         ImageButton btn = findViewById(R.id.btn_menu);
