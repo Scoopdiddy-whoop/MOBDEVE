@@ -60,6 +60,7 @@ public class BoardView extends View {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(3);
         canvas.drawRect(0,0,canvas.getWidth(),canvas.getHeight()/2, paint);*/
+        Log.i("TAG", "onDraw: ENTERED ONDRAW");
         float chessBoardSide = (float)Math.min(this.getWidth(), this.getHeight()) * this.scaleFactor;
         this.cellSide = chessBoardSide / 8.0F;
         this.originX = ((float)this.getWidth() - chessBoardSide) / 2.0F;
@@ -84,7 +85,7 @@ public class BoardView extends View {
                         Log.i("TAG", "piecePosition NULL");
                     }
                     else{
-                        if (temp.getPlayer() == "Black")
+                        if (temp.getPlayer().equals("Black"))
                             this.movingPieceBitmap = (Bitmap) this.bitmaps.get(R.drawable.red_piece);
                         else
                             this.movingPieceBitmap = (Bitmap) this.bitmaps.get(R.drawable.cream_piece);
@@ -108,6 +109,10 @@ public class BoardView extends View {
                 this.invalidate();
         }
         return true;
+    }
+
+    public void updateBoard(){
+        this.invalidate();
     }
 
     private final void drawChessboard(Canvas canvas) {
@@ -137,10 +142,18 @@ public class BoardView extends View {
             for(int j = 8; col < j; ++col) {
                 CheckerPiece piece = this.piecePosition.pieceAt(new Square(col, row));
                 if(piece!=null){
-                    if(piece.getPlayer() == "Black")
-                        drawPieceAt(canvas,col,row,(Bitmap)this.bitmaps.get(R.drawable.red_piece));
-                    if(piece.getPlayer() == "White")
-                        drawPieceAt(canvas,col,row,(Bitmap)this.bitmaps.get(R.drawable.cream_piece));
+                    if(piece.getPlayer().equals("Black")) {
+                        Log.i("TAG", "drawPiecesBlack: " + col + row);
+                        drawPieceAt(canvas, col, row, (Bitmap) this.bitmaps.get(R.drawable.red_piece));
+                    }
+                    if(piece.getPlayer().equals("White")) {
+                        Log.i("TAG", "drawPiecesBlack: " + col + row);
+                        drawPieceAt(canvas, col, row, (Bitmap) this.bitmaps.get(R.drawable.cream_piece));
+                    }
+                    Log.i("TAG", "drawPiecesBlack: " + piece.getPlayer());
+                }
+                else{
+                    Log.i("TAG", "NULL AT: " + col + row);
                 }
             }
         }

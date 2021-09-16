@@ -52,14 +52,20 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         storagePreferences = new StoragePreferences(getApplicationContext());
         piecesLoad = new ArrayList<>();
         background = findViewById(R.id.gamebg);
+        piecesLoad.add(new CheckerPiece(0, 1, "Black", false));
+        checkerGame = new CheckerGame(piecesLoad);
+        boardView = findViewById(R.id.board);
+        boardView.setPiecePosition((PiecePosition)this);
         String status = getIntent().getStringExtra("status");
         String roomName = getIntent().getStringExtra("roomName");
+
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
         roomRef = firebaseDatabase.getReference("rooms/"+roomName);
         Log.i("GAMEACTIVITY", "ON CREATE");
 
         if(status.equals("host")){
+            piecesLoad.clear();
             Log.i("GAMEACTIVITY", "HAHATDOG");
             int row = 0;
             for (int i = 8; row < i; ++row) {
@@ -79,7 +85,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 }
             }
             checkerGame = new CheckerGame(piecesLoad);
-            roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
+            roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
             Log.i("GAMEACTIVITY", "HOST");
             setup();
         }
@@ -88,6 +94,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             roomRef.child("boxes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(Task<DataSnapshot> task) {
+                    piecesLoad.clear();
                     Log.i("GAMEACTIVITY", "ONCOMP");
                     if (task.isSuccessful()) {
                         DataSnapshot dataSnapshot = task.getResult();
@@ -103,6 +110,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             piecesLoad.add(cp);
                         }
                         checkerGame = new CheckerGame(piecesLoad);
+                        boardView.invalidate();
+                        Log.i("onComplete", "pieces"+ checkerGame.getPiecesBox().size());
                         setup();
                     }
                     else {
@@ -111,8 +120,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 }
             });
         }
-        boardView = findViewById(R.id.board);
-        boardView.setPiecePosition((PiecePosition)this);
 
     }
     public void setup(){
@@ -138,8 +145,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                     bd.add(cp);
                 }
                 Log.i("GAME", "NUM: "+ bd.size());
-                CheckerGame.setPiecesBox(bd);
-                Log.i("GAME ACTIVITY", CheckerGame.getPiecesBox().toString());
+                checkerGame.setPiecesBox(bd);
                 boardView.invalidate();
             }
             @Override
@@ -192,7 +198,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     public void movePiece(Square from, Square to) {
         checkerGame.movePiece(from, to);
 
-        roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
+        roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
 
         enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
         playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
