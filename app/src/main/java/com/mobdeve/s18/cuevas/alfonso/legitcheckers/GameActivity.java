@@ -42,6 +42,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private TextView enemyScore;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference roomRef;
+    ArrayList<CheckerPiece> piecesLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             setContentView(R.layout.activity_game);
 
         storagePreferences = new StoragePreferences(getApplicationContext());
+        piecesLoad = new ArrayList<>();
         background = findViewById(R.id.gamebg);
         String status = getIntent().getStringExtra("status");
         String roomName = getIntent().getStringExtra("roomName");
@@ -59,7 +61,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         if(status.equals("host")){
             Log.i("GAMEACTIVITY", "HAHATDOG");
-            ArrayList<CheckerPiece> piecesLoad = new ArrayList<CheckerPiece>();
             int row = 0;
             for (int i = 8; row < i; ++row) {
                 int col = 0;
@@ -76,7 +77,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             piecesLoad.add(new CheckerPiece(col, row, "White", false));
                     }
                 }
-            };
+            }
             checkerGame = new CheckerGame(piecesLoad);
             roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
             Log.i("GAMEACTIVITY", "HOST");
@@ -87,9 +88,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             roomRef.child("boxes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(Task<DataSnapshot> task) {
+                    Log.i("GAMEACTIVITY", "ONCOMP");
                     if (task.isSuccessful()) {
                         DataSnapshot dataSnapshot = task.getResult();
-                        ArrayList<CheckerPiece> bd = new ArrayList<>();
                         Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
 
                         for(DataSnapshot snapshot : pieces) {
@@ -99,9 +100,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
 
                             CheckerPiece cp = new CheckerPiece(col,row,player,king);
-                            bd.add(cp);
+                            piecesLoad.add(cp);
                         }
-                        CheckerGame.setPiecesBox(bd);
+                        checkerGame = new CheckerGame(piecesLoad);
                         setup();
                     }
                     else {
@@ -110,7 +111,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 }
             });
         }
-
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
 
