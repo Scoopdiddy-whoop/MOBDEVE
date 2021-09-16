@@ -44,6 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
 
+<<<<<<< HEAD
         Database db = new Database();
         String player1 = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
         String player2 = "4oMulfPW3AT7fwofBPQnZTS3CeP2";
@@ -64,6 +65,16 @@ public class HistoryActivity extends AppCompatActivity {
                 btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
             }
         });
+=======
+        if(friendID==null){
+            loadProfile(user.getUid());
+            Button btn = (Button)findViewById(R.id.return_home);
+            btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
+        }
+        else{
+            loadProfile(friendID);
+        }
+>>>>>>> parent of ba25cf7 (friend loading, friend adding)
     }
 
 

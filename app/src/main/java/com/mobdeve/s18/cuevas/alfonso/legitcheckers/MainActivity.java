@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         storagePreferences = new StoragePreferences(getApplicationContext());
 
 
-    private FirebaseAuth mAuth;
-    private User userModel;
-    private FirebaseDatabase mDb;
-
+        private FirebaseAuth mAuth;
+        private User userModel;
+        private FirebaseDatabase mDb;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
