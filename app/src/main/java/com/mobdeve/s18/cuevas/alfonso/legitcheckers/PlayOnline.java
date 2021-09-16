@@ -71,7 +71,13 @@ public class  PlayOnline extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 roomName = roomList.get(position);
                 roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player2");
-                addRoomEventListener("guest");
+                if(roomName.equals(username)) {
+                    addRoomEventListener("host");
+                }
+                else{
+                    addRoomEventListener("guest");
+                }
+
                 roomRef.setValue(username);
                 Log.i("ROOM ACTION", "ROOM JOINED");
             }
