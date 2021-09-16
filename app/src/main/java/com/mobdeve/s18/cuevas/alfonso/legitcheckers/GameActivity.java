@@ -146,7 +146,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                         if(task.isSuccessful()){
                             if(task.getResult().getValue()!=null) {
                                 currentPlayer = task.getResult().getValue().toString();
-                                checkerGame.setCurrentPlayer(currentPlayer);
                                 ArrayList<CheckerPiece> bd = new ArrayList<>();
                                 Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
                                 for(DataSnapshot snapshot : pieces) {
@@ -162,6 +161,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                                 Log.i("GAME", "NUM: "+ bd.size());
                                 checkerGame.setPiecesBox(bd);
                                 boardView.invalidate();
+                                checkerGame.checkWinner();
                                 win();
                             }
                         }

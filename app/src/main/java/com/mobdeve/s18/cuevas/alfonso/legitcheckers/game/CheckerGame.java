@@ -286,6 +286,13 @@ public class CheckerGame {
         Log.i("TAG", "After Move: " + currentPlayer);
     }
 
+    public void checkWinner(){
+        if(getNumPieces("Black")==0)
+            setWinningPlayerColor("White");
+        if(getNumPieces("White")==0)
+            setWinningPlayerColor("Black");
+    }
+
     public void addPiece(CheckerPiece piece){
         piecesBox.add(piece);
     };
