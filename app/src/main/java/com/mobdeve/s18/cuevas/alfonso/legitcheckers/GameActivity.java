@@ -95,7 +95,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         }
         else{
             Log.i("GAMEACTIVITY", "GUEST");
-            roomRef.child("boxes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(Task<DataSnapshot> task) {
                     piecesLoad.clear();
@@ -231,11 +231,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             if(!checkerGame.getWinningPlayer().equals("None")) {
                 Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
                 Database db = new Database();
-                roomRef.child("room").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String player1 =  task.getResult().child("player1").getValue().toString();
-                        String player2 = task.getResult().child("player2").getValue().toString();
+                        String player1 =  task.getResult().child("p1ID").getValue().toString();
+                        String player2 = task.getResult().child("p2ID").getValue().toString();
                         String winner = checkerGame.getWinningPlayer();
                         if(checkerGame.getWinningPlayer().equals("White")){
                             winner = player1;
@@ -243,10 +243,16 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                         else if(checkerGame.getWinningPlayer().equals("Black")){
                             winner = player2;
                         }
+
+
                         db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
                             @Override
                             public void onCallBack(boolean bool) {
                                 Log.i("PLAY", "win success");
+//                                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//
+//                                db.addMatchToUser(firebaseAuth.getCurrentUser().getUid(), );
+
                             }
                         });
                     }
@@ -255,5 +261,4 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             }
         }
     }
-
 }

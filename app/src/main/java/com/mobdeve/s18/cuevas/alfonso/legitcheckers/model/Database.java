@@ -16,7 +16,6 @@ import java.util.Map;
 public class Database {
     private FirebaseFirestore db;
 
-
     public Database() {
         db = FirebaseFirestore.getInstance();
     }
@@ -407,7 +406,6 @@ public class Database {
                                             });
                                         }
                                     });
-
                                 }
                                 else{
                                     addWin(player2, new FirebaseBooleanCallback() {
@@ -440,7 +438,6 @@ public class Database {
             }
         });
     }
-
     public interface FirebaseMapCallback{
         void onCallBack(Map<String, String> map);
     }

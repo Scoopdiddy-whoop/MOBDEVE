@@ -363,7 +363,7 @@ public class CheckerGame {
     public CheckerGame(ArrayList<CheckerPiece> piecesLoad){
         piecesBox = piecesLoad;
         currentPlayer = "White";
-        winningPlayer = "None";
+        winningPlayer = "White";
 
     }
 }

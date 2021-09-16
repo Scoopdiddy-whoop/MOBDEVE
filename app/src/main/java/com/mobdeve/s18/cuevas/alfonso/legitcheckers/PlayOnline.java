@@ -62,6 +62,7 @@ public class  PlayOnline extends AppCompatActivity {
 
             addRoomEventListener("host");
             roomRef.setValue(username);
+            firebaseDatabase.getReference("rooms/"+roomName+"/p1ID").setValue(mAuth.getCurrentUser().getUid());
             DatabaseReference dr = firebaseDatabase.getReference("rooms/"+roomName+"/turn");
             dr.setValue("White");
 
@@ -79,6 +80,7 @@ public class  PlayOnline extends AppCompatActivity {
                 }
 
                 roomRef.setValue(username);
+                firebaseDatabase.getReference("rooms/"+roomName+"/p2ID").setValue(mAuth.getCurrentUser().getUid());
                 //Log.i("ROOM ACTION", "ROOM JOINED");
             }
         });
