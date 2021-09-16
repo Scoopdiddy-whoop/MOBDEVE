@@ -48,27 +48,15 @@ public class HistoryActivity extends AppCompatActivity {
 
         musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
 
-
-        Database db = new Database();
-        String player1 = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
-        String player2 = "4oMulfPW3AT7fwofBPQnZTS3CeP2";
-        String winner = "XxLrytMiC6cwKQxpuJy09rdNxzh2";
-        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
-            @Override
-            public void onCallBack(boolean bool) {
-                Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
-                Intent intent = getIntent();
-                String friendID = intent.getStringExtra("friendID");
-                if(friendID==null){
-                    loadProfile(user.getUid());
-                }
-                else{
-                    loadProfile(friendID);
-                }
-                Button btn = (Button)findViewById(R.id.return_home);
-                btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
-            }
-        });
+        Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
+        Intent intent = getIntent();
+        String friendID = intent.getStringExtra("friendID");
+        if(friendID==null){
+            loadProfile(user.getUid());
+        }
+        else{
+            loadProfile(friendID);
+        }
     }
 
 
