@@ -22,6 +22,7 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerGame;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerPiece;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.Square;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
 import java.util.ArrayList;
@@ -229,6 +230,21 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
             if(!checkerGame.getWinningPlayer().equals("None")) {
                 Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
+                Database db = new Database();
+                roomRef.child("room").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        String player1 =  task.getResult().child("player1").getValue().toString();
+                        String player2 = task.getResult().child("player2").getValue().toString();
+                        String winner = checkerGame.getWinningPlayer();
+                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+                            @Override
+                            public void onCallBack(boolean bool) {
+                                Log.i("PLAY", "win success");
+                            }
+                        });
+                    }
+                });
                 openWinnerDialog();
             }
         }
