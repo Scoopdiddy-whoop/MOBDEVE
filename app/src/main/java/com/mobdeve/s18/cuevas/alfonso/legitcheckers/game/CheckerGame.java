@@ -218,6 +218,23 @@ public class CheckerGame {
                             addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, true));
                         else
                             addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, turnKing(to)));
+                        if (availEat() == null){
+                            Log.i("TAG", "movePiece: AVAIL EAT");
+                            if (currentPlayer.equals("Black"))
+                                currentPlayer = "White";
+                            else
+                                currentPlayer = "Black";
+                        }
+                        else{
+                            Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
+                            if(!samePieceCanEat){
+                                Log.i("TAG", "movePiece: SAMEPIECE CANT EAT" + to.getCol() + to.getRow());
+                                if (currentPlayer.equals("Black"))
+                                    currentPlayer = "White";
+                                else
+                                    currentPlayer = "Black";
+                            }
+                        }
                     }
                 }
                 if(canEatRight(from)!=99){
@@ -238,24 +255,23 @@ public class CheckerGame {
                             Log.i("TAG", "movePiece: SUCCESSFULLY PLACED PIECE");
                             addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, turnKing(to)));
                         }
-                    }
-                }
-
-                if (availEat() == null){
-                    Log.i("TAG", "movePiece: AVAIL EAT");
-                    if (currentPlayer.equals("Black"))
-                        currentPlayer = "White";
-                    else
-                        currentPlayer = "Black";
-                }
-                else{
-                    Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
-                    if(!samePieceCanEat){
-                        Log.i("TAG", "movePiece: SAMEPIECE CANT EAT" + to.getCol() + to.getRow());
-                        if (currentPlayer.equals("Black"))
-                            currentPlayer = "White";
-                        else
-                            currentPlayer = "Black";
+                        if (availEat() == null){
+                            Log.i("TAG", "movePiece: AVAIL EAT");
+                            if (currentPlayer.equals("Black"))
+                                currentPlayer = "White";
+                            else
+                                currentPlayer = "Black";
+                        }
+                        else{
+                            Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
+                            if(!samePieceCanEat){
+                                Log.i("TAG", "movePiece: SAMEPIECE CANT EAT" + to.getCol() + to.getRow());
+                                if (currentPlayer.equals("Black"))
+                                    currentPlayer = "White";
+                                else
+                                    currentPlayer = "Black";
+                            }
+                        }
                     }
                 }
             }
