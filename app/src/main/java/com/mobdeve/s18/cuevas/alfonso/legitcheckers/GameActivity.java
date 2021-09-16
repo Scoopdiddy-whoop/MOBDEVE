@@ -210,28 +210,25 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     @Override
     public void movePiece(Square from, Square to) {
         checkerGame.movePiece(from, to);
-        roomRef.child("boxes").setValue(checkerGame.getPiecesBox()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                currentPlayer = checkerGame.getCurrentPlayer();
-                Log.i("PLAY", "moved MOVE PIECE" + currentPlayer);
-                Log.i("PLAY", "CURR: " + currentPlayer);
-                if(currentPlayer.equals("White")){
-                    currentPlayer = "White";
-                }else{
-                    currentPlayer = "Black";
-                }
-                roomRef.child("turn").setValue(currentPlayer);
 
-                enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
-                playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
-                if(!checkerGame.getWinningPlayer().equals("None")) {
-                    Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
-                    openWinnerDialog();
-                }
-                boardView.invalidate();
-            }
-        });
+        roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
+        currentPlayer = checkerGame.getCurrentPlayer();
+        Log.i("PLAY", "moved MOVE PIECE: " + currentPlayer);
+        Log.i("PLAY", "CURR: " + currentPlayer);
+        if(currentPlayer.equals("White")){
+            currentPlayer = "White";
+        }else{
+            currentPlayer = "Black";
+        }
+        roomRef.child("turn").setValue(currentPlayer);
+
+        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
+        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
+        if(!checkerGame.getWinningPlayer().equals("None")) {
+            Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
+            openWinnerDialog();
+        }
+        boardView.invalidate();
     }
 
 }
