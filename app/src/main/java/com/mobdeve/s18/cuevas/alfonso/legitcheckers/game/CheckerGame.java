@@ -249,14 +249,14 @@ public class CheckerGame {
                         currentPlayer = "Black";
                 }
                 else{
-                    /*Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
+                    Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
                     if(!samePieceCanEat){
                         Log.i("TAG", "movePiece: SAMEPIECE CANT EAT" + to.getCol() + to.getRow());
                         if (currentPlayer.equals("Black"))
                             currentPlayer = "White";
                         else
                             currentPlayer = "Black";
-                    }*/
+                    }
                 }
             }
             else
