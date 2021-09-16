@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         binding.btnHistory.setOnClickListener(v -> {
             if(mAuth.getCurrentUser() != null) {
                 startActivity(new Intent(MainActivity.this, HistoryActivity.class));
-                finish();
             }
             else{
                 openLoginDialog();

@@ -29,7 +29,7 @@ public class WinnerDialog extends AppCompatDialogFragment {
 
         title = view.findViewById(R.id.winner);
         String winner = getArguments().getString("winner");
-        title.setText(winner + " HAS WON THE GAME!");
+        title.setText(winner.toUpperCase() + " HAS WON THE GAME!");
 
         home = view.findViewById(R.id.btn_goHome);
         home.setOnClickListener(v -> startActivity(new Intent(wContext, MainActivity.class)));

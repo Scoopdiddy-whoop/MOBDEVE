@@ -78,9 +78,12 @@ public class SettingsDialog extends AppCompatDialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Boolean themechanged = storagePreferences.getThemePreferences("Theme") == nightMode;
         storagePreferences.saveMusicPreferences("Play", playMusic);
         storagePreferences.saveThemePreferences("Theme", nightMode);
+        if((getActivity().getClass() == MainActivity.class) && !themechanged){
         Intent intent = new Intent(sContext, getActivity().getClass());
         startActivity(intent);
+        }
     }
 }
