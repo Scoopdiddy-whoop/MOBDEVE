@@ -46,27 +46,31 @@ public class Database {
         }
         getFriendList(user, new FirebaseMapCallback() {
             @Override
-            public void onCallBack(Map<String, String> map) {
-                map.put("friendID" + map.size() + 1, friendID);
-                db.collection("users").document(user).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
+            public void onCallBack(Map<String, String> userMap) {
+                getFriendList(friendID, new FirebaseMapCallback() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onCallBack(Map<String, String> friendMap) {
+                        friendMap.put("friendID" + friendMap.size() + 1, user);
+                        userMap.put("friendID"+userMap.size()+1, friendID);
+
+                        updateFriendList(user, userMap);
+                        updateFriendList(friendID, friendMap);
+
                         getUsername(friendID, new FirebaseStringCallback() {
                             @Override
-                            public void onCallBack(String string) {
-                                firebaseBooleanCallback.onCallBack(true);
-                                Log.i("DATABASE", "Friend added to friend list");
-                                FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
-                                fdb.getReference("users/"+user+"/friends/"+friendID+"/username").setValue(string);
+                            public void onCallBack(String friendUN) {
+                                getUsername(user, new FirebaseStringCallback() {
+                                    @Override
+                                    public void onCallBack(String userUN) {
+                                        firebaseBooleanCallback.onCallBack(true);
+                                        Log.i("DATABASE", "Friend added to friend list");
+                                        FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                        fdb.getReference("users/"+user+"/friends/"+friendID+"/username").setValue(friendUN);
+                                        fdb.getReference("users/"+friendID+"/friends/"+user+"/username").setValue(userUN);
+                                    }
+                                });
                             }
                         });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i("DATABASE", "Error adding friend", e);
-                        firebaseBooleanCallback.onCallBack(false);
                     }
                 });
             }

@@ -35,13 +35,12 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHistoryBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
         storagePreferences = new StoragePreferences(getApplicationContext());
-        Button btn = (Button)findViewById(R.id.return_home);
+        Button btn = binding.returnHome;
         background = findViewById(R.id.matchbg);
         btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
         musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
@@ -87,6 +86,7 @@ public class HistoryActivity extends AppCompatActivity {
                                         MatchAdapter matchAdapter = new MatchAdapter(ids, getApplicationContext());
                                         binding.rvMatches.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                         binding.rvMatches.setAdapter(matchAdapter);
+                                        setContentView(binding.getRoot());
                                     }
                                 });
                             }
@@ -95,8 +95,6 @@ public class HistoryActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 
     @Override

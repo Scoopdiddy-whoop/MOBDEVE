@@ -243,8 +243,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                         else if(checkerGame.getWinningPlayer().equals("Black")){
                             winner = player2;
                         }
-
-
                         db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
                             @Override
                             public void onCallBack(boolean bool) {
