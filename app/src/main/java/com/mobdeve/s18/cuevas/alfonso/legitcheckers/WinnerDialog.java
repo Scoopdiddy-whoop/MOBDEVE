@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,20 +39,21 @@ public class WinnerDialog extends AppCompatDialogFragment {
         home = view.findViewById(R.id.btn_goHome);
 
         home.setOnClickListener(v ->{
-            getActivity().finish();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
             DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
             roomRef.removeValue();
+            getActivity().finish();
+            Log.i("WINNER", "going to main");
+
             startActivity(new Intent(wContext, MainActivity.class));
         });
 
         return builder.create();
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(wContext, MainActivity.class);
-        startActivity(intent);
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Intent intent = new Intent(wContext, MainActivity.class);
+//        startActivity(intent);
+//    }
 }

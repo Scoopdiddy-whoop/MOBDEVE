@@ -56,7 +56,6 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
-
     private void loadProfile(String userID) {
         Database db = new Database();
         final int []wins = new int[1];

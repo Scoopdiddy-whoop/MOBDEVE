@@ -99,7 +99,8 @@ public class  PlayOnline extends AppCompatActivity {
                 intent.putExtra("roomName", roomName);
                 intent.putExtra("status", status);
                 startActivity(intent);
-
+                finish();
+                roomRef.removeEventListener(this);
             }
 
             @Override
@@ -126,7 +127,6 @@ public class  PlayOnline extends AppCompatActivity {
                     Log.i("ADD ROOMS", "ROOM:" + roomList.get(0));
                     binding.lvRoom.setAdapter(adapter);
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

@@ -4,8 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -240,16 +244,21 @@ public class Database {
                     public void onSuccess(Void aVoid) {
                         Log.i("DATABASE", "Wins has been increased by 1");
                         firebaseBooleanCallback.onCallBack(true);
-//                        FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
-//                        DatabaseReference lead  = fdb.getReference("leaderboards/"+user+"/wins");
-//                        lead.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                                DataSnapshot dataSnapshot = task.getResult();
-//                                int wins = Integer.parseInt(dataSnapshot.getValue().toString()) + 1;
-//                                lead.setValue(wins);
-//                            }
-//                        });
+                        FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+                        DatabaseReference lead  = fdb.getReference("leaderboards/"+user+"/wins");
+                        lead.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                DataSnapshot dataSnapshot = task.getResult();
+                                int wins = 0;
+                                if(task.getResult().getValue()==null){
+                                    lead.setValue(1);
+                                }
+                                else{
+                                    lead.setValue(Integer.parseInt(dataSnapshot.getValue().toString()) + 1);
+                                }
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

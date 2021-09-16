@@ -194,7 +194,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        roomRef.removeValue();
+//        roomRef.removeValue();
     }
 
     @Override
