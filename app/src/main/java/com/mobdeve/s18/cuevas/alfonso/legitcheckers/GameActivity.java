@@ -139,7 +139,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                currentPlayer = roomRef.child("Turn").get().toString();
 //                checkerGame.setCurrentPlayer(currentPlayer);
-                win();
+
 
                 roomRef.child("turn").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -161,6 +161,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                         Log.i("GAME", "NUM: "+ bd.size());
                         checkerGame.setPiecesBox(bd);
                         boardView.invalidate();
+                        win();
                     }
                 });
             }
@@ -245,20 +246,22 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                     String winner = checkerGame.getWinningPlayer();
                     if(checkerGame.getWinningPlayer().equals("White")){
                         winner = player1;
+                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+                            @Override
+                            public void onCallBack(boolean bool) {
+                                Log.i("PLAY", "win success");
+                            }
+                        });
                     }
                     else if(checkerGame.getWinningPlayer().equals("Black")){
                         winner = player2;
+                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+                            @Override
+                            public void onCallBack(boolean bool) {
+                                Log.i("PLAY", "win success");
+                            }
+                        });
                     }
-                    db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
-                        @Override
-                        public void onCallBack(boolean bool) {
-                            Log.i("PLAY", "win success");
-//                                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//
-//                                db.addMatchToUser(firebaseAuth.getCurrentUser().getUid(), );
-
-                        }
-                    });
                 }
             });
             openWinnerDialog();
