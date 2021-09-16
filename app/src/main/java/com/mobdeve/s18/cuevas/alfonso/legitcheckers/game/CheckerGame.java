@@ -9,6 +9,7 @@ public class CheckerGame {
     private ArrayList piecesBox;
     private String currentPlayer;
     private String winningPlayer;
+    private int val;
 
     public final void clear() {
         piecesBox.clear();
@@ -28,6 +29,14 @@ public class CheckerGame {
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
+        if(this.currentPlayer.equals("Black")) {
+            this.val = 1;
+            Log.i("TAG", "ValBlack: " + val);
+        }
+        else {
+            this.val = -1;
+            Log.i("TAG", "ValWhite: " + val);
+        }
     }
 
 
@@ -85,13 +94,7 @@ public class CheckerGame {
 
     public int canEatRight(Square from){
 
-        int val;
         CheckerPiece pieceAtRight;
-        if(currentPlayer.equals("Black"))
-            val = 1;
-        else
-            val = -1;
-
         pieceAtRight = pieceAt(from.getCol() + 1, from.getRow() + val);
         if(pieceAtRight!=null){
             if(!pieceAtRight.getPlayer().equals(currentPlayer))
@@ -131,12 +134,7 @@ public class CheckerGame {
 
     public int canEatLeft(Square from){
 
-        int val;
         CheckerPiece pieceAtLeft;
-        if(currentPlayer.equals("Black"))
-            val = 1;
-        else
-            val = -1;
 
         pieceAtLeft = pieceAt(from.getCol() - 1, from.getRow() + val);
 
@@ -185,12 +183,7 @@ public class CheckerGame {
     }
 
     public void movePiece(Square from, Square to) {
-        int val;
         boolean isCurrKing =  pieceAt(from.getCol(), from.getRow()).isKing();
-        if(currentPlayer == "Black")
-            val = 1;
-        else
-            val = -1;
         Log.i("TAG", "movePiece:" + from.getCol() + from.getRow());
         Log.i("TAG", "Before Move: " + currentPlayer);
         if(currentPlayer.equals(pieceAt(from.getCol(), from.getRow()).getPlayer())) {
@@ -213,9 +206,12 @@ public class CheckerGame {
             else if (pieceEater != null && pieceEater == pieceAt(from.getCol(), from.getRow())){
                 Log.i("TAG", "movePiece: CAN EAT SUCCESS");
                 if(canEatLeft(from)!=99){
+                    Log.i("TAG", "movePiece: SUCCESSFULLY ATE3 VAL = " + val);
+
                     if(canEatLeft(from)==2)
                         val *= -1;
                     if((from.getCol() - 2 == to.getCol()) && (from.getRow() + val + val) == to.getRow()) {
+                        Log.i("TAG", "movePiece: SUCCESSFULLY ATE4");
                         piecesBox.remove(pieceAt(from.getCol(), from.getRow()));
                         piecesBox.remove(pieceAt(from.getCol() - 1, from.getRow() + val));
                         if(isCurrKing)
@@ -225,35 +221,42 @@ public class CheckerGame {
                     }
                 }
                 if(canEatRight(from)!=99){
+                    Log.i("TAG", "movePiece: SUCCESSFULLY ATE1 VAL = " + val);
                     if(canEatRight(from)==2) {
                         Log.i("TAG", "movePiece: KINGEATS");
                         val *= -1;
                     }
                     if((from.getCol() + 2 == to.getCol()) && (from.getRow() + val + val) == to.getRow()) {
-                        Log.i("TAG", "movePiece: KINGEATS SUCCESSFULLY");
+                        Log.i("TAG", "movePiece: SUCCESSFULLY ATE2");
                         piecesBox.remove(pieceAt(from.getCol(), from.getRow()));
                         piecesBox.remove(pieceAt(from.getCol() + 1, from.getRow() + val));
-                        if(isCurrKing)
+                        if(isCurrKing) {
+                            Log.i("TAG", "movePiece: SUCCESSFULLY MADE KING");
                             addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, true));
-                        else
+                        }
+                        else {
+                            Log.i("TAG", "movePiece: SUCCESSFULLY PLACED PIECE");
                             addPiece(new CheckerPiece(to.getCol(), to.getRow(), currentPlayer, turnKing(to)));
+                        }
                     }
                 }
 
                 if (availEat() == null){
+                    Log.i("TAG", "movePiece: AVAIL EAT");
                     if (currentPlayer.equals("Black"))
                         currentPlayer = "White";
                     else
                         currentPlayer = "Black";
                 }
                 else{
-                    Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
+                    /*Boolean samePieceCanEat = (availEat().getCol() == to.getCol()) && (availEat().getRow() == to.getRow());
                     if(!samePieceCanEat){
+                        Log.i("TAG", "movePiece: SAMEPIECE CANT EAT" + to.getCol() + to.getRow());
                         if (currentPlayer.equals("Black"))
                             currentPlayer = "White";
                         else
                             currentPlayer = "Black";
-                    }
+                    }*/
                 }
             }
             else

@@ -58,7 +58,7 @@ public class  PlayOnline extends AppCompatActivity {
             binding.btnCreateRoom.setEnabled(false);
             roomRef = firebaseDatabase.getReference("rooms/"+roomName+"/player1");
 
-            Log.i("ROOM ACTION", "ROOM CREATED");
+            //Log.i("ROOM ACTION", "ROOM CREATED");
 
             addRoomEventListener("host");
             roomRef.setValue(username);
@@ -79,7 +79,7 @@ public class  PlayOnline extends AppCompatActivity {
                 }
 
                 roomRef.setValue(username);
-                Log.i("ROOM ACTION", "ROOM JOINED");
+                //Log.i("ROOM ACTION", "ROOM JOINED");
             }
         });
         //show new rooms
@@ -116,7 +116,7 @@ public class  PlayOnline extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 roomList.clear();
                 Iterable<DataSnapshot> rooms = dataSnapshot.getChildren();
-                Log.i("ADD ROOMS", "ROOMS ADDED");
+                //Log.i("ADD ROOMS", "ROOMS ADDED");
                 for(DataSnapshot snapshot : rooms) {
                     roomList.add(snapshot.getKey());
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(PlayOnline.this,

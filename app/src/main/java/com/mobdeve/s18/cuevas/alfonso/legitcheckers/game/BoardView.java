@@ -90,14 +90,12 @@ public class BoardView extends View {
                         else
                             this.movingPieceBitmap = (Bitmap) this.bitmaps.get(R.drawable.cream_piece);
                     }
-                    Log.i("TAG", "onTouchEvent: YOU MADE IT DOWN!");
                 break;
             case MotionEvent.ACTION_UP:
                 int col = (int)((event.getX() - this.originX) / this.cellSide);
                 int row = (int)((event.getY() - this.originY) / this.cellSide);
                 if(this.piecePosition.pieceAt(new Square(this.fromCol, this.fromRow))!=null)
                     this.piecePosition.movePiece(new Square(this.fromCol, this.fromRow), new Square(col, row));
-                Log.i("TAG", "onTouchEvent: YOU MADE IT UP!");
                 this.movingPiece = (CheckerPiece)null;
                 this.movingPieceBitmap = (Bitmap)null;
                 this.invalidate();
@@ -105,7 +103,6 @@ public class BoardView extends View {
             case MotionEvent.ACTION_MOVE:
                 this.movingPieceX = event.getX();
                 this.movingPieceY = event.getY();
-                Log.i("TAG", "onTouchEvent: YOU MADE IT MOVE!");
                 this.invalidate();
         }
         return true;
