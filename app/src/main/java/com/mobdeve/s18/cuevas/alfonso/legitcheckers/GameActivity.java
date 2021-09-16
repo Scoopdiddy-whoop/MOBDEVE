@@ -50,8 +50,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         storagePreferences = new StoragePreferences(getApplicationContext());
         background = findViewById(R.id.gamebg);
-
-        checkerGame = new CheckerGame();
         String status = getIntent().getStringExtra("status");
         String roomName = getIntent().getStringExtra("roomName");
 
@@ -61,6 +59,25 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
         if(status.equals("host")){
             Log.i("GAMEACTIVITY", "HAHATDOG");
+            ArrayList<CheckerPiece> piecesLoad = new ArrayList<CheckerPiece>();
+            int row = 0;
+            for (int i = 8; row < i; ++row) {
+                int col = 0;
+                for (int j = 8; col < j; ++col) {
+                    boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
+                    if (row < 3) {
+                        if (positions) {
+                            piecesLoad.add(new CheckerPiece(col, row, "Black", false));
+                        }
+                    }
+
+                    if (row > 4) {
+                        if (positions)
+                            piecesLoad.add(new CheckerPiece(col, row, "White", false));
+                    }
+                }
+            };
+            checkerGame = new CheckerGame(piecesLoad);
             roomRef.child("boxes").setValue(CheckerGame.getPiecesBox());
             Log.i("GAMEACTIVITY", "HOST");
             setup();
@@ -94,10 +111,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             });
         }
 
-    }
-    public void setup(){
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
+
+    }
+    public void setup(){
         playerScore = findViewById(R.id.player);
         enemyScore = findViewById(R.id.enemy);
         ImageButton btn = findViewById(R.id.btn_menu);

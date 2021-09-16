@@ -330,27 +330,11 @@ public class CheckerGame {
         return winningPlayer;
     }
 
-    public CheckerGame(){
-        piecesBox = new ArrayList<CheckerPiece>();
+    public CheckerGame(ArrayList<CheckerPiece> piecesLoad){
+        piecesBox = piecesLoad;
         currentPlayer = "White";
         winningPlayer = "None";
-        int row = 0;
-        for (int i = 8; row < i; ++row) {
-            int col = 0;
-            for (int j = 8; col < j; ++col) {
-                boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
-                if (row < 3) {
-                    if (positions) {
-                        this.addPiece(new CheckerPiece(col, row, "Black", false));
-                    }
-                }
 
-                if (row > 4) {
-                    if (positions)
-                        this.addPiece(new CheckerPiece(col, row, "White", false));
-                }
-            }
-        };
     }
 }
 
