@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 public class CheckerGame {
     private ArrayList piecesBox;
-    private static String currentPlayer;
-    private static String winningPlayer;
+    private String currentPlayer;
+    private String winningPlayer;
 
     public final void clear() {
         piecesBox.clear();
@@ -17,12 +17,17 @@ public class CheckerGame {
     public ArrayList<CheckerPiece> getPiecesBox() {
         return piecesBox;
     }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public void setPiecesBox(ArrayList<CheckerPiece> piecesBox) {
         this.piecesBox = piecesBox;
     }
 
-    public static void setCurrentPlayer(String currentPlayer) {
-        CheckerGame.currentPlayer = currentPlayer;
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
 

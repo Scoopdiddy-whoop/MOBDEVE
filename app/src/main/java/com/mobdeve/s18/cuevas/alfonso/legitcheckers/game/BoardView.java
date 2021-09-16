@@ -143,17 +143,11 @@ public class BoardView extends View {
                 CheckerPiece piece = this.piecePosition.pieceAt(new Square(col, row));
                 if(piece!=null){
                     if(piece.getPlayer().equals("Black")) {
-                        Log.i("TAG", "drawPiecesBlack: " + col + row);
                         drawPieceAt(canvas, col, row, (Bitmap) this.bitmaps.get(R.drawable.red_piece));
                     }
                     if(piece.getPlayer().equals("White")) {
-                        Log.i("TAG", "drawPiecesBlack: " + col + row);
                         drawPieceAt(canvas, col, row, (Bitmap) this.bitmaps.get(R.drawable.cream_piece));
                     }
-                    Log.i("TAG", "drawPiecesBlack: " + piece.getPlayer());
-                }
-                else{
-                    Log.i("TAG", "NULL AT: " + col + row);
                 }
             }
         }

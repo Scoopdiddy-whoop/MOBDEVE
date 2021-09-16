@@ -43,12 +43,14 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference roomRef;
     ArrayList<CheckerPiece> piecesLoad;
+    private String currentPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_game);
 
+        currentPlayer = "White";
         storagePreferences = new StoragePreferences(getApplicationContext());
         piecesLoad = new ArrayList<>();
         background = findViewById(R.id.gamebg);
@@ -133,14 +135,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         roomRef.child("boxes").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(roomRef.child("turn").get().equals("White")){
-                    roomRef.child("turn").setValue("Black");
-                    CheckerGame.setCurrentPlayer("Black");
-                }
-                else{
-                    roomRef.child("turn").setValue("White");
-                    CheckerGame.setCurrentPlayer("White");
-                }
+                currentPlayer = roomRef.child("Turn").get().toString();
+                checkerGame.setCurrentPlayer(currentPlayer);
                 ArrayList<CheckerPiece> bd = new ArrayList<>();
                 Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
                 for(DataSnapshot snapshot : pieces) {
@@ -207,10 +203,13 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         checkerGame.movePiece(from, to);
 
         roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
+        Log.i("TAG", checkerGame.getCurrentPlayer() + " move");
+        currentPlayer = checkerGame.getCurrentPlayer();
+        roomRef.child("turn").setValue(currentPlayer);
 
         enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
         playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
-        if(checkerGame.getWinningPlayer()!="None") {
+        if(!checkerGame.getWinningPlayer().equals("None")) {
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             openWinnerDialog();
         }
