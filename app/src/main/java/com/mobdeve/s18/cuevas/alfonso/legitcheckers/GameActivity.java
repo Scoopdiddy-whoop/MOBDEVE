@@ -135,9 +135,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(roomRef.child("turn").get().equals("White")){
                     roomRef.child("turn").setValue("Black");
+                    CheckerGame.setCurrentPlayer("Black");
                 }
                 else{
                     roomRef.child("turn").setValue("White");
+                    CheckerGame.setCurrentPlayer("White");
                 }
                 ArrayList<CheckerPiece> bd = new ArrayList<>();
                 Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();

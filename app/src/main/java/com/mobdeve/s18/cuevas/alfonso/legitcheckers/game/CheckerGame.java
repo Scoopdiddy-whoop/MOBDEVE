@@ -20,6 +20,12 @@ public class CheckerGame {
     public void setPiecesBox(ArrayList<CheckerPiece> piecesBox) {
         this.piecesBox = piecesBox;
     }
+
+    public static void setCurrentPlayer(String currentPlayer) {
+        CheckerGame.currentPlayer = currentPlayer;
+    }
+
+
     public boolean canMove(Square from, Square to){
         int colDist, rowDist;
         boolean colValid, rowValid;
