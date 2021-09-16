@@ -364,7 +364,6 @@ public class CheckerGame {
         piecesBox = piecesLoad;
         currentPlayer = "White";
         winningPlayer = "None";
-
     }
 }
 

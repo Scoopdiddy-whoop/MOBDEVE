@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     ArrayList<CheckerPiece> piecesLoad;
     private String currentPlayer;
     private String status;
+    private String roomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         boardView = findViewById(R.id.board);
         boardView.setPiecePosition((PiecePosition)this);
         status = getIntent().getStringExtra("status");
-        String roomName = getIntent().getStringExtra("roomName");
+        roomName = getIntent().getStringExtra("roomName");
 
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
@@ -139,29 +140,31 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                currentPlayer = roomRef.child("Turn").get().toString();
 //                checkerGame.setCurrentPlayer(currentPlayer);
-
-
                 roomRef.child("turn").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        currentPlayer = task.getResult().getValue().toString();
-                        checkerGame.setCurrentPlayer(currentPlayer);
-                        ArrayList<CheckerPiece> bd = new ArrayList<>();
-                        Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
-                        for(DataSnapshot snapshot : pieces) {
-                            String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
-                            int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
-                            int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
-                            boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
+                        if(task.isSuccessful()){
+                            if(task.getResult().getValue()!=null) {
+                                currentPlayer = task.getResult().getValue().toString();
+                                checkerGame.setCurrentPlayer(currentPlayer);
+                                ArrayList<CheckerPiece> bd = new ArrayList<>();
+                                Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
+                                for(DataSnapshot snapshot : pieces) {
+                                    String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
+                                    int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
+                                    int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
+                                    boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
 
-                            CheckerPiece cp = new CheckerPiece(col,row,player,king);
-                            bd.add(cp);
+                                    CheckerPiece cp = new CheckerPiece(col,row,player,king);
+                                    bd.add(cp);
+                                }
+                                Log.i("PLAY", "moved ON DATA: " + currentPlayer);
+                                Log.i("GAME", "NUM: "+ bd.size());
+                                checkerGame.setPiecesBox(bd);
+                                boardView.invalidate();
+                                win();
+                            }
                         }
-                        Log.i("PLAY", "moved ON DATA: " + currentPlayer);
-                        Log.i("GAME", "NUM: "+ bd.size());
-                        checkerGame.setPiecesBox(bd);
-                        boardView.invalidate();
-                        win();
                     }
                 });
             }
@@ -189,6 +192,12 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        roomRef.removeValue();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         //stopService(musicIntent);
@@ -201,6 +210,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     public void openWinnerDialog() {
         Bundle bundle = new Bundle();
         bundle.putString("winner", checkerGame.getWinningPlayer().toString());
+        bundle.putString("room",roomName);
         WinnerDialog winnerDialog = new WinnerDialog();
         winnerDialog.setArguments(bundle);
         winnerDialog.show(getSupportFragmentManager(), "example dialog");
@@ -231,6 +241,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
             playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
 
+            checkerGame.setWinningPlayerColor("White");
             win();
         }
     }

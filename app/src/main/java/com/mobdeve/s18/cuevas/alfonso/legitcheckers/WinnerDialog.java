@@ -11,6 +11,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class WinnerDialog extends AppCompatDialogFragment {
 
@@ -29,10 +32,18 @@ public class WinnerDialog extends AppCompatDialogFragment {
 
         title = view.findViewById(R.id.winner);
         String winner = getArguments().getString("winner");
+        String roomName = getArguments().getString("room");
         title.setText(winner.toUpperCase() + " HAS WON THE GAME!");
 
         home = view.findViewById(R.id.btn_goHome);
-        home.setOnClickListener(v -> startActivity(new Intent(wContext, MainActivity.class)));
+
+        home.setOnClickListener(v ->{
+            getActivity().finish();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+            DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
+            roomRef.removeValue();
+            startActivity(new Intent(wContext, MainActivity.class));
+        });
 
         return builder.create();
     }
