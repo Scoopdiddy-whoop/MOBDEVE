@@ -43,9 +43,7 @@ public class HistoryActivity extends AppCompatActivity {
         storagePreferences = new StoragePreferences(getApplicationContext());
         Button btn = (Button)findViewById(R.id.return_home);
         background = findViewById(R.id.matchbg);
-
         btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
-
         musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
 
         Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
@@ -108,9 +106,6 @@ public class HistoryActivity extends AppCompatActivity {
         playBGmusic = storagePreferences.getMusicPreferences("Play");
         nightMode = storagePreferences.getThemePreferences("Theme");
         Log.i("TAG", "HistoryActivity:" + playBGmusic);
-        if(playBGmusic){
-            //startService(musicIntent);
-        }
         if(nightMode){
         background.setImageResource(R.drawable.nightbg);
         }
