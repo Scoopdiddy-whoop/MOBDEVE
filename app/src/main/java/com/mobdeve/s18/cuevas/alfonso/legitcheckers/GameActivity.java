@@ -139,6 +139,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                currentPlayer = roomRef.child("Turn").get().toString();
 //                checkerGame.setCurrentPlayer(currentPlayer);
+                win();
 
                 roomRef.child("turn").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -228,35 +229,39 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
             enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
             playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
-            if(!checkerGame.getWinningPlayer().equals("None")) {
-                Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
-                Database db = new Database();
-                roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        String player1 =  task.getResult().child("p1ID").getValue().toString();
-                        String player2 = task.getResult().child("p2ID").getValue().toString();
-                        String winner = checkerGame.getWinningPlayer();
-                        if(checkerGame.getWinningPlayer().equals("White")){
-                            winner = player1;
-                        }
-                        else if(checkerGame.getWinningPlayer().equals("Black")){
-                            winner = player2;
-                        }
-                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
-                            @Override
-                            public void onCallBack(boolean bool) {
-                                Log.i("PLAY", "win success");
+
+            win();
+        }
+    }
+    public void win(){
+        if(!checkerGame.getWinningPlayer().equals("None")) {
+            Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
+            Database db = new Database();
+            roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    String player1 =  task.getResult().child("p1ID").getValue().toString();
+                    String player2 = task.getResult().child("p2ID").getValue().toString();
+                    String winner = checkerGame.getWinningPlayer();
+                    if(checkerGame.getWinningPlayer().equals("White")){
+                        winner = player1;
+                    }
+                    else if(checkerGame.getWinningPlayer().equals("Black")){
+                        winner = player2;
+                    }
+                    db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
+                        @Override
+                        public void onCallBack(boolean bool) {
+                            Log.i("PLAY", "win success");
 //                                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 //
 //                                db.addMatchToUser(firebaseAuth.getCurrentUser().getUid(), );
 
-                            }
-                        });
-                    }
-                });
-                openWinnerDialog();
-            }
+                        }
+                    });
+                }
+            });
+            openWinnerDialog();
         }
     }
 }
