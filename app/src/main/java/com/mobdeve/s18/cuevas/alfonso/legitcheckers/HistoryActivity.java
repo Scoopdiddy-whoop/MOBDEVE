@@ -41,7 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         storagePreferences = new StoragePreferences(getApplicationContext());
         Button btn = binding.returnHome;
-        background = findViewById(R.id.matchbg);
+        background = binding.matchbg;
         btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
         musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
 
