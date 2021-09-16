@@ -154,7 +154,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             CheckerPiece cp = new CheckerPiece(col,row,player,king);
                             bd.add(cp);
                         }
-                        Log.i("PLAY", "moved ON DATA" + currentPlayer);
+                        Log.i("PLAY", "moved ON DATA: " + currentPlayer);
                         Log.i("GAME", "NUM: "+ bd.size());
                         checkerGame.setPiecesBox(bd);
                         boardView.invalidate();
@@ -210,25 +210,28 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     @Override
     public void movePiece(Square from, Square to) {
         checkerGame.movePiece(from, to);
-        Log.i("PLAY", "moved MOVE PIECE" + currentPlayer);
-        roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
-        Log.i("TAG", checkerGame.getCurrentPlayer() + " move");
-        currentPlayer = checkerGame.getCurrentPlayer();
-        Log.i("PLAY", "CURR: " + currentPlayer);
-        if(currentPlayer.equals("White")){
-            currentPlayer = "White";
-        }else{
-            currentPlayer = "Black";
-        }
-        roomRef.child("turn").setValue(currentPlayer);
+        roomRef.child("boxes").setValue(checkerGame.getPiecesBox()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                currentPlayer = checkerGame.getCurrentPlayer();
+                Log.i("PLAY", "moved MOVE PIECE" + currentPlayer);
+                Log.i("PLAY", "CURR: " + currentPlayer);
+                if(currentPlayer.equals("White")){
+                    currentPlayer = "White";
+                }else{
+                    currentPlayer = "Black";
+                }
+                roomRef.child("turn").setValue(currentPlayer);
 
-        enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
-        playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
-        if(!checkerGame.getWinningPlayer().equals("None")) {
-            Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
-            openWinnerDialog();
-        }
-        boardView.invalidate();
+                enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
+                playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
+                if(!checkerGame.getWinningPlayer().equals("None")) {
+                    Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
+                    openWinnerDialog();
+                }
+                boardView.invalidate();
+            }
+        });
     }
 
 }
