@@ -43,7 +43,6 @@ public class HistoryActivity extends AppCompatActivity {
         Button btn = binding.returnHome;
         background = binding.matchbg;
         btn.setOnClickListener(v -> startActivity(new Intent(HistoryActivity.this, MainActivity.class)));
-        musicIntent = new Intent(HistoryActivity.this, BackgroundSoundService.class);
 
         Log.i("HISTORY", "USER: "+ mAuth.getCurrentUser());
         Intent intent = getIntent();

@@ -81,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnLeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LeaderActivity.class));
+            }
+        });
+
 
         background = findViewById(R.id.homebg);
         musicIntent = new Intent(MainActivity.this, BackgroundSoundService.class);
