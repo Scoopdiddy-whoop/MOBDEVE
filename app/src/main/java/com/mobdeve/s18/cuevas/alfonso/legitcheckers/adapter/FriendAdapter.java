@@ -17,19 +17,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.HistoryActivity;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.R;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Database;
+import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Friend;
 
 import java.util.ArrayList;
 
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder>{
 
-    private ArrayList<String> friends;
+    private ArrayList<Friend> friends;
     private Context context;
 
-    public FriendAdapter(ArrayList<String> friends, Context context){
+    public FriendAdapter(ArrayList<Friend> friends, Context context){
         this.friends = friends;
         this.context = context;
         Log.i("FRIENDADAPTER", "WORKING");
+
     }
 
     @Override
@@ -39,55 +41,41 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Database db = new Database();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        db.findFriend(user.getUid(), friends.get(position), new Database.FirebaseBooleanCallback() {
-            @Override
-            public void onCallBack(boolean bool) {
-                //if friends
-                if(bool){
-                    db.getUsername(friends.get(position), new Database.FirebaseStringCallback() {
-                        @Override
-                        public void onCallBack(String string) {
-                            holder.tv_username.setText(string);
+
+        Friend friend = friends.get(position);
+        if(friend.isFriends()){
+            holder.tv_username.setText(friend.getUsername());
+            holder.btn_action.setText("VIEW");
+            holder.btn_action.setOnClickListener(v ->{
+                String friendID = friends.get(position).getId();
+                Intent intent = new Intent(context, HistoryActivity.class);
+                intent.putExtra("friendID", friendID);
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            });
+        }
+        else{
+            holder.tv_username.setText(friend.getUsername());
+            holder.btn_action.setText("ADD");
+            holder.btn_action.setOnClickListener(v->{
+                db.addFriend(user.getUid(), friend.getId(), new Database.FirebaseBooleanCallback() {
+                    @Override
+                    public void onCallBack(boolean bool) {
+                        if(bool){
+                            holder.tv_username.setText(friend.getUsername());
                             holder.btn_action.setText("VIEW");
                             holder.btn_action.setOnClickListener(v ->{
-                                String friendID = friends.get(position);
+                                String friendID = friends.get(position).getId();
                                 Intent intent = new Intent(context, HistoryActivity.class);
                                 intent.putExtra("friendID", friendID);
                                 context.startActivity(intent);
                                 ((Activity)context).finish();
                             });
                         }
-                    });
-                }
-                else {
-                    holder.btn_action.setText("ADD");
-                    holder.btn_action.setOnClickListener(v->{
-                        db.addFriend(user.getUid(), friends.get(position), new Database.FirebaseBooleanCallback() {
-                            @Override
-                            public void onCallBack(boolean bool) {
-                                if(bool){
-                                    db.getUsername(friends.get(position), new Database.FirebaseStringCallback() {
-                                        @Override
-                                        public void onCallBack(String string) {
-                                            holder.tv_username.setText(string);
-                                            holder.btn_action.setText("VIEW");
-                                            holder.btn_action.setOnClickListener(v ->{
-                                                String friendID = friends.get(position);
-                                                Intent intent = new Intent(context, HistoryActivity.class);
-                                                intent.putExtra("friendID", friendID);
-                                                context.startActivity(intent);
-                                                ((Activity)context).finish();
-                                            });
-                                        }
-                                    });
-
-                                }
-                            }
-                        });
-                    });
-                }
-            }
-        });
+                    }
+                });
+            });
+        }
     }
 
     @Override

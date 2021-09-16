@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,11 +51,13 @@ public class Database {
                 db.collection("users").document(user).update("friendlist", map).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        firebaseBooleanCallback.onCallBack(true);
-                        addFriend(friendID, user, new FirebaseBooleanCallback() {
+                        getUsername(friendID, new FirebaseStringCallback() {
                             @Override
-                            public void onCallBack(boolean bool) {
+                            public void onCallBack(String string) {
+                                firebaseBooleanCallback.onCallBack(true);
                                 Log.i("DATABASE", "Friend added to friend list");
+                                FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                fdb.getReference("users/"+user+"/friends/"+friendID+"/username").setValue(string);
                             }
                         });
                     }
