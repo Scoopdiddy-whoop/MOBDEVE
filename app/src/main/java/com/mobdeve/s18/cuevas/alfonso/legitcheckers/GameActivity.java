@@ -95,7 +95,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         }
         else{
             Log.i("GAMEACTIVITY", "GUEST");
-            roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            roomRef.child("boxes").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(Task<DataSnapshot> task) {
                     piecesLoad.clear();
