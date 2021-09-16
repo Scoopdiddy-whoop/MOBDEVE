@@ -137,20 +137,28 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                currentPlayer = roomRef.child("Turn").get().toString();
 //                checkerGame.setCurrentPlayer(currentPlayer);
-                ArrayList<CheckerPiece> bd = new ArrayList<>();
-                Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
-                for(DataSnapshot snapshot : pieces) {
-                    String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
-                    int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
-                    int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
-                    boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
 
-                    CheckerPiece cp = new CheckerPiece(col,row,player,king);
-                    bd.add(cp);
-                }
-                Log.i("GAME", "NUM: "+ bd.size());
-                checkerGame.setPiecesBox(bd);
-                boardView.invalidate();
+                roomRef.child("turn").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        currentPlayer = task.getResult().getValue().toString();
+                        checkerGame.setCurrentPlayer(currentPlayer);
+                        ArrayList<CheckerPiece> bd = new ArrayList<>();
+                        Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
+                        for(DataSnapshot snapshot : pieces) {
+                            String player = Objects.requireNonNull(((HashMap) snapshot.getValue()).get("player").toString());
+                            int row = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("row").toString()));
+                            int col = Integer.parseInt(Objects.requireNonNull(((HashMap) snapshot.getValue()).get("col").toString()));
+                            boolean king = ((boolean)((HashMap) Objects.requireNonNull(snapshot.getValue())).get("king"));
+
+                            CheckerPiece cp = new CheckerPiece(col,row,player,king);
+                            bd.add(cp);
+                        }
+                        Log.i("GAME", "NUM: "+ bd.size());
+                        checkerGame.setPiecesBox(bd);
+                        boardView.invalidate();
+                    }
+                });
             }
             @Override
             public void onCancelled(DatabaseError error) {
