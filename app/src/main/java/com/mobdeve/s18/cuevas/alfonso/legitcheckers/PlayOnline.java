@@ -63,7 +63,7 @@ public class  PlayOnline extends AppCompatActivity {
             addRoomEventListener("host");
             roomRef.setValue(username);
             DatabaseReference dr = firebaseDatabase.getReference("rooms/"+roomName+"/turn");
-            dr.setValue("WHITE");
+            dr.setValue("White");
 
         });
         binding.lvRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
