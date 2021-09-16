@@ -154,6 +154,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             CheckerPiece cp = new CheckerPiece(col,row,player,king);
                             bd.add(cp);
                         }
+                        Log.i("PLAY", "moved ON DATA" + currentPlayer);
                         Log.i("GAME", "NUM: "+ bd.size());
                         checkerGame.setPiecesBox(bd);
                         boardView.invalidate();
@@ -209,10 +210,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     @Override
     public void movePiece(Square from, Square to) {
         checkerGame.movePiece(from, to);
-
+        Log.i("PLAY", "moved MOVE PIECE" + currentPlayer);
         roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
         Log.i("TAG", checkerGame.getCurrentPlayer() + " move");
         currentPlayer = checkerGame.getCurrentPlayer();
+        Log.i("PLAY", "CURR: " + currentPlayer);
         if(currentPlayer.equals("White")){
             currentPlayer = "White";
         }else{
@@ -226,7 +228,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             openWinnerDialog();
         }
-
         boardView.invalidate();
     }
 
