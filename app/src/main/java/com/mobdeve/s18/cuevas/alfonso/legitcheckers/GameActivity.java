@@ -136,6 +136,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 if(roomRef.child("turn").get().equals("White")){
                     roomRef.child("turn").setValue("Black");
                 }
+                else{
+                    roomRef.child("turn").setValue("White");
+                }
                 ArrayList<CheckerPiece> bd = new ArrayList<>();
                 Iterable<DataSnapshot> pieces = dataSnapshot.getChildren();
                 for(DataSnapshot snapshot : pieces) {
