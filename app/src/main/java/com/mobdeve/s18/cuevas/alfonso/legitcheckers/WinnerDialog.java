@@ -41,8 +41,8 @@ public class WinnerDialog extends AppCompatDialogFragment {
         home.setOnClickListener(v ->{
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
             DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
-            roomRef.removeValue();
-            getActivity().finish();
+//            roomRef.removeValue();
+//            getActivity().finish();
             Log.i("WINNER", "going to main");
 
             startActivity(new Intent(wContext, MainActivity.class));

@@ -102,7 +102,6 @@ public class  PlayOnline extends AppCompatActivity {
                 finish();
                 roomRef.removeEventListener(this);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //error
