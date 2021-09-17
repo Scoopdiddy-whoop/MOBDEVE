@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:text="1 WINS"
                 android:textSize="20dp"
-                android:id="@+id/tv_opponent"
+                android:id="@+id/tv_wins"
                 android:fontFamily="@font/lilitiaone"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -249,14 +249,19 @@ public class Database {
                         lead.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                DataSnapshot dataSnapshot = task.getResult();
-                                int wins = 0;
-                                if(task.getResult().getValue()==null){
-                                    lead.setValue(1);
-                                }
-                                else{
-                                    lead.setValue(Integer.parseInt(dataSnapshot.getValue().toString()) + 1);
-                                }
+                                getUsername(user, new FirebaseStringCallback() {
+                                    @Override
+                                    public void onCallBack(String string) {
+                                        DataSnapshot dataSnapshot = task.getResult();
+                                        if(task.getResult().getValue()==null){
+                                            lead.setValue(1);
+                                        }
+                                        else{
+                                            lead.setValue(Integer.parseInt(dataSnapshot.getValue().toString()) + 1);
+                                        }
+                                        fdb.getReference("leaderboards/"+user+"/username").setValue(string);
+                                    }
+                                });
                             }
                         });
                     }
