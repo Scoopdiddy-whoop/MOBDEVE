@@ -24,7 +24,6 @@ import com.mobdeve.s18.cuevas.alfonso.legitcheckers.model.Leader;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.util.StoragePreferences;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class LeaderActivity extends AppCompatActivity {
@@ -77,14 +76,14 @@ public class LeaderActivity extends AppCompatActivity {
                         /* Move elements of arr[0..i-1], that are
                         greater than key, to one position ahead
                         of their current position */
-                        while (j >= 0 && leaders.get(j).getWins() > key)
+                        while (j >= 0 && leaders.get(j).getWins() < key)
                         {
                             leaders.set(j+1, leaders.get(j));
                             j = j - 1;
                         }
                         leaders.set(j+1, leaders.get(i));
                     }
-                    Collections.reverse(leaders);
+//                    Collections.reverse(leaders);
                     RecyclerView rv_players = binding.rvPlayers;
                     LeaderAdapter leaderAdapter = new LeaderAdapter(leaders, getApplicationContext());
                     rv_players.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
