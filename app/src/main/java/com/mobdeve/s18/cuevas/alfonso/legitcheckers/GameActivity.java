@@ -311,11 +311,12 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                         });
                     }
                     Log.i("DEBUG", "opening");
+//                    openWinnerDialog();
+                    binding.textView3.setText(new StringBuilder().append(checkerGame.getWinningPlayer()).append("Won").toString());
                     checkerGame.setWinningPlayerColor("None");
-                    openWinnerDialog();
-                    startActivity(new Intent(getApplicationContext() , MainActivity.class));
-//                    roomRef.removeValue();
-//                    finish();
+//                    startActivity(new Intent(getApplicationContext() , MainActivity.class));
+                    roomRef.removeValue();
+                    finish();
                 }
             });
 

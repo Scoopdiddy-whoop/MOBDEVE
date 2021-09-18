@@ -96,7 +96,7 @@
                 android:shadowDx="4"
                 android:shadowDy="4"
                 android:shadowRadius="2"
-                android:text="Username"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
