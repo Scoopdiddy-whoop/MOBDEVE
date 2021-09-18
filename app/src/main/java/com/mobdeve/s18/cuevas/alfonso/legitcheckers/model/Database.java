@@ -238,28 +238,35 @@ public class Database {
         getWins(user, new FirebaseIntCallback() {
             @Override
             public void onCallBack(int wins) {
+                Log.i("DATABASE", "Wins before adding: "+ wins);
                 wins+=1;
+                Log.i("DATABASE", "Wins has been increased by 1");
                 db.collection("users").document(user).update("wins", wins).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i("DATABASE", "Wins has been increased by 1");
-                        firebaseBooleanCallback.onCallBack(true);
-                        FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
-                        DatabaseReference lead  = fdb.getReference("leaderboards/"+user+"/wins");
-                        lead.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        getWins(user, new FirebaseIntCallback() {
                             @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                getUsername(user, new FirebaseStringCallback() {
+                            public void onCallBack(int number) {
+                                Log.i("DATABASE", "Wins after adding: "+ number);
+                                firebaseBooleanCallback.onCallBack(true);
+                                FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                DatabaseReference lead  = fdb.getReference("leaderboards/"+user+"/wins");
+                                lead.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
-                                    public void onCallBack(String string) {
-                                        DataSnapshot dataSnapshot = task.getResult();
-                                        if(task.getResult().getValue()==null){
-                                            lead.setValue(1);
-                                        }
-                                        else{
-                                            lead.setValue(Integer.parseInt(dataSnapshot.getValue().toString()) + 1);
-                                        }
-                                        fdb.getReference("leaderboards/"+user+"/username").setValue(string);
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        getUsername(user, new FirebaseStringCallback() {
+                                            @Override
+                                            public void onCallBack(String string) {
+                                                DataSnapshot dataSnapshot = task.getResult();
+                                                if(task.getResult().getValue()==null){
+                                                    lead.setValue(1);
+                                                }
+                                                else{
+                                                    lead.setValue(Integer.parseInt(dataSnapshot.getValue().toString()) + 1);
+                                                }
+                                                fdb.getReference("leaderboards/"+user+"/username").setValue(string);
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -418,45 +425,7 @@ public class Database {
                 addMatchToUser(player1, documentReference.getId(), new FirebaseBooleanCallback() {
                     @Override
                     public void onCallBack(boolean bool) {
-                        addMatchToUser(player2, documentReference.getId(), new FirebaseBooleanCallback() {
-                            @Override
-                            public void onCallBack(boolean bool) {
-                                if(winner.equals(player1)){
-                                    addWin(player1, new FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                            addLoss(player2, new FirebaseBooleanCallback() {
-                                                @Override
-                                                public void onCallBack(boolean bool) {
-                                                    if(bool)
-                                                        firebaseBooleanCallback.onCallBack(true);
-                                                    else
-                                                        firebaseBooleanCallback.onCallBack(false);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                                else{
-                                    addWin(player2, new FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                            addLoss(player1, new FirebaseBooleanCallback() {
-                                                @Override
-                                                public void onCallBack(boolean bool) {
-                                                    if(bool)
-                                                        firebaseBooleanCallback.onCallBack(true);
-                                                    else
-                                                        firebaseBooleanCallback.onCallBack(false);
-                                                }
-                                            });
-                                        }
-                                    });
-
-                                }
-
-                            }
-                        });
+                        firebaseBooleanCallback.onCallBack(bool);
                     }
                 });
             }

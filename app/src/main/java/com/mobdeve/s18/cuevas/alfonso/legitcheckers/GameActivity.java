@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +49,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private String status;
     private String roomName;
     ValueEventListener valueEventListener;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         boardView.setPiecePosition((PiecePosition)this);
         status = getIntent().getStringExtra("status");
         roomName = getIntent().getStringExtra("roomName");
-
+        mAuth = FirebaseAuth.getInstance();
 
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
         roomRef = firebaseDatabase.getReference("rooms/"+roomName);
@@ -268,6 +270,20 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             @Override
                             public void onCallBack(boolean bool) {
                                 Log.i("PLAY", "win success");
+                                if(player1.equals(mAuth.getCurrentUser().getUid())){
+                                    db.addWin(player1, new Database.FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                        }
+                                    });
+                                }
+                                else{
+                                    db.addLoss(player2, new Database.FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
@@ -277,12 +293,25 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             @Override
                             public void onCallBack(boolean bool) {
                                 Log.i("PLAY", "win success");
+                                if(player2.equals(mAuth.getCurrentUser().getUid())){
+                                    db.addWin(player2, new Database.FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                        }
+                                    });
+                                }
+                                else{
+                                    db.addLoss(player1, new Database.FirebaseBooleanCallback() {
+                                        @Override
+                                        public void onCallBack(boolean bool) {
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
                     Log.i("DEBUG", "opening");
 //                    openWinnerDialog();
-                    checkerGame.setWinningPlayerColor("None");
                     startActivity(new Intent(getApplicationContext() , MainActivity.class));
                     roomRef.removeValue();
                     finish();
