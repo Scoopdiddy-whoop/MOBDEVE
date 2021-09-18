@@ -42,6 +42,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private BoardView boardView;
     private TextView playerScore;
     private TextView enemyScore;
+    private TextView gameHeader;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference roomRef;
     ArrayList<CheckerPiece> piecesLoad;
@@ -63,11 +64,12 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         piecesLoad.add(new CheckerPiece(0, 1, "Black", false));
         checkerGame = new CheckerGame(piecesLoad);
         boardView = findViewById(R.id.board);
+        gameHeader = findViewById(R.id.gameHeader);
         boardView.setPiecePosition((PiecePosition)this);
         status = getIntent().getStringExtra("status");
         roomName = getIntent().getStringExtra("roomName");
         mAuth = FirebaseAuth.getInstance();
-
+        binding = ActivityGameBinding.inflate(getLayoutInflater());
         firebaseDatabase = FirebaseDatabase.getInstance("https://legitcheckers-default-rtdb.asia-southeast1.firebasedatabase.app");
         roomRef = firebaseDatabase.getReference("rooms/"+roomName);
         Log.i("GAMEACTIVITY", "ON CREATE");
@@ -171,6 +173,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                                 Log.i("GAME", "NUM: "+ bd.size());
                                 checkerGame.setPiecesBox(bd);
                                 boardView.invalidate();
+                                enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
+                                playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
                                 checkerGame.checkWinner();
                                 win();
                             }
@@ -250,8 +254,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             }
             roomRef.child("turn").setValue(currentPlayer);
 
-            enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
-            playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
         }
     }
     public void win(){
@@ -312,11 +314,10 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                     }
                     Log.i("DEBUG", "opening");
 //                    openWinnerDialog();
-                    binding.textView3.setText(new StringBuilder().append(checkerGame.getWinningPlayer()).append("Won").toString());
+                    gameHeader.setText(checkerGame.getWinningPlayer() + " Won!");
                     checkerGame.setWinningPlayerColor("None");
 //                    startActivity(new Intent(getApplicationContext() , MainActivity.class));
                     roomRef.removeValue();
-                    finish();
                 }
             });
 
