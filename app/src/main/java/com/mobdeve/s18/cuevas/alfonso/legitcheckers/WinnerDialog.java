@@ -43,8 +43,9 @@ public class WinnerDialog extends AppCompatDialogFragment {
             DatabaseReference roomRef = firebaseDatabase.getReference("rooms/"+roomName);
             Log.i("WINNER", "going to main");
             Log.i("DEBUG", "closing");
-            roomRef.removeValue();
             startActivity(new Intent(wContext, MainActivity.class));
+            roomRef.removeValue();
+            getActivity().finish();
         });
 
         return builder.create();
