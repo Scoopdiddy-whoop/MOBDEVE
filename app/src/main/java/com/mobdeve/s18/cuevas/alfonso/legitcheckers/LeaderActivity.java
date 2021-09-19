@@ -63,6 +63,10 @@ public class LeaderActivity extends AppCompatActivity {
                     for(DataSnapshot snapshot : users) {
                         String username = ((HashMap)snapshot.getValue()).get("username").toString();
                         Log.i("LEAD",username);
+
+                        if(((HashMap)snapshot.getValue()).get("wins") == null)
+                            continue;
+
                         int wins =  Integer.parseInt(((HashMap)snapshot.getValue()).get("wins").toString());
                         Log.i("LEAD", wins+"");
 
