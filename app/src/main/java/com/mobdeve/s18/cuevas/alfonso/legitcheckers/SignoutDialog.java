@@ -23,12 +23,13 @@ public class SignoutDialog extends AppCompatDialogFragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         TextView tv_username = view.findViewById(R.id.tv_username);
         Button btn_signout = view.findViewById(R.id.btn_signout);
-
+        TextView tv_id = view.findViewById(R.id.tv_id);
         Database db = new Database();
         db.getUsername(mAuth.getCurrentUser().getUid(), new Database.FirebaseStringCallback() {
             @Override
             public void onCallBack(String string) {
                 tv_username.setText(string);
+                tv_id.setText(new StringBuilder().append("(userid: ").append(mAuth.getCurrentUser().getUid()).append(")").toString());
             }
         });
 

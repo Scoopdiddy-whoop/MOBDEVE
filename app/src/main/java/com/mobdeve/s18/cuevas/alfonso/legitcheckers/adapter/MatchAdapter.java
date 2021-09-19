@@ -22,10 +22,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     private ArrayList<String> matches;
     private Context context;
+    private String userID;
 
-    public MatchAdapter(ArrayList<String> matches, Context context) {
+    public MatchAdapter(ArrayList<String> matches, Context context, String userID) {
         this.matches = matches;
         this.context = context;
+        this.userID = userID;
         Log.i("MATCHDADAPTER", "WORKING");
     }
 
@@ -58,17 +60,17 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
                                                 Log.i("MATCH", "WINNER: " + winner);
                                                 Log.i("MATCH", "Player1: " + usernameP1);
                                                 Log.i("MATCH", "Player2: " + usernameP2);
-                                                if(user.getUid().equals(winner)) {
+                                                if(winner.equals(userID)) {
                                                     holder.tv_winner.setText("VICTORY");
                                                 }
                                                 else {
                                                     holder.tv_winner.setText("DEFEAT");
                                                 }
-                                                if(player1.equals(user.getUid())){
+                                                if(player1.equals(userID)){
                                                     holder.tv_opponent.setText(new StringBuilder().append("vs ").append(usernameP2).toString());
                                                 }
                                                 else {
-                                                    holder.tv_opponent.setText(new StringBuilder().append("vs").append(usernameP1).toString());
+                                                    holder.tv_opponent.setText(new StringBuilder().append("vs ").append(usernameP1).toString());
                                                 }
                                             }
                                         });

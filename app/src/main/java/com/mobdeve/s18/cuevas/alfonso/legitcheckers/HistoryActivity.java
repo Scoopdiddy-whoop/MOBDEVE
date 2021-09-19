@@ -81,7 +81,7 @@ public class HistoryActivity extends AppCompatActivity {
                                         binding.textView2.setText(new StringBuilder().append("W").append(wins[0]).append("/L").append(losses[0]).toString());
                                         binding.textView3.setText(username[0]);
                                         ArrayList<String> ids = new ArrayList<>(map.values());
-                                        MatchAdapter matchAdapter = new MatchAdapter(ids, getApplicationContext());
+                                        MatchAdapter matchAdapter = new MatchAdapter(ids, getApplicationContext(), userID);
                                         binding.rvMatches.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                                         binding.rvMatches.setAdapter(matchAdapter);
                                         setContentView(binding.getRoot());

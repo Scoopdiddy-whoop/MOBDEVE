@@ -28,12 +28,24 @@
         android:fontFamily="@font/lilitiaone"
         />
 
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="3dp"
+        android:text="(userid: "
+        android:textSize="12sp"
+        />
+
     <Button
         android:id="@+id/btn_signout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_username"
+        app:layout_constraintTop_toBottomOf="@id/tv_id"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="15dp"
