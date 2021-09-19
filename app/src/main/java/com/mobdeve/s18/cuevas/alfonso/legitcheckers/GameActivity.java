@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.databinding.ActivityGameBinding;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.BoardView;
 import com.mobdeve.s18.cuevas.alfonso.legitcheckers.game.CheckerGame;
@@ -265,52 +266,14 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     String player1 =  task.getResult().child("p1ID").getValue().toString();
                     String player2 = task.getResult().child("p2ID").getValue().toString();
-                    String winner = checkerGame.getWinningPlayer();
+                    String winner;
                     if(checkerGame.getWinningPlayer().equals("White")){
                         winner = player1;
-                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
-                            @Override
-                            public void onCallBack(boolean bool) {
-                                Log.i("PLAY", "win success");
-                                if(player1.equals(mAuth.getCurrentUser().getUid())){
-                                    db.addWin(player1, new Database.FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                        }
-                                    });
-                                }
-                                else{
-                                    db.addLoss(player2, new Database.FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                        }
-                                    });
-                                }
-                            }
-                        });
+                        winfunc(player1, player2, winner);
                     }
-                    else if(checkerGame.getWinningPlayer().equals("Black")){
+                    else{
                         winner = player2;
-                        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseBooleanCallback() {
-                            @Override
-                            public void onCallBack(boolean bool) {
-                                Log.i("PLAY", "win success");
-                                if(player2.equals(mAuth.getCurrentUser().getUid())){
-                                    db.addWin(player2, new Database.FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                        }
-                                    });
-                                }
-                                else{
-                                    db.addLoss(player1, new Database.FirebaseBooleanCallback() {
-                                        @Override
-                                        public void onCallBack(boolean bool) {
-                                        }
-                                    });
-                                }
-                            }
-                        });
+                        winfunc(player1, player2, winner);
                     }
                     Log.i("DEBUG", "opening");
 //                    openWinnerDialog();
@@ -322,5 +285,53 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             });
 
         }
+    }
+    public void winfunc(String player1, String player2, String winner){
+        Database db = new Database();
+        String loser;
+
+        db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseDecRefCallback() {
+            @Override
+            public void onCallBack(DocumentReference docRef) {
+                if(currentPlayer.equals(player1)) {
+                    db.addMatchToUser(player1, docRef.toString(), new Database.FirebaseBooleanCallback() {
+                        @Override
+                        public void onCallBack(boolean bool) {
+                            if(winner.equals(player1)) {
+                                db.addWin(player1, new Database.FirebaseBooleanCallback() {
+                                    @Override
+                                    public void onCallBack(boolean bool) {}
+                                });
+                            }
+                            else {
+                                db.addLoss(player1, new Database.FirebaseBooleanCallback() {
+                                    @Override
+                                    public void onCallBack(boolean bool) {}
+                                });
+                            }
+                        }
+                    });
+                }
+                else{
+                    db.addMatchToUser(player2, docRef.toString(), new Database.FirebaseBooleanCallback() {
+                        @Override
+                        public void onCallBack(boolean bool) {
+                            if(winner.equals(player2)) {
+                                db.addWin(player2, new Database.FirebaseBooleanCallback() {
+                                    @Override
+                                    public void onCallBack(boolean bool) {}
+                                });
+                            }
+                            else {
+                                db.addLoss(player2, new Database.FirebaseBooleanCallback() {
+                                    @Override
+                                    public void onCallBack(boolean bool) {}
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }

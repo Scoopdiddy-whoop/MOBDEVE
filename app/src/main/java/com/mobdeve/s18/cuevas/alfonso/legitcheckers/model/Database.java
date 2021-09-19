@@ -413,7 +413,7 @@ public class Database {
             }
         });
     }
-    public void addMatchToDatabase(String player1, String player2, String winner, FirebaseBooleanCallback firebaseBooleanCallback) {
+    public void addMatchToDatabase(String player1, String player2, String winner, FirebaseDecRefCallback firebaseDecRefCallback) {
         Map<String, String> data = new HashMap<>();
         data.put("player1", player1);
         data.put("player2", player2);
@@ -422,18 +422,12 @@ public class Database {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Log.i("DATABASE", "MATCH ADDED TO DATABASE");
-                addMatchToUser(player1, documentReference.getId(), new FirebaseBooleanCallback() {
-                    @Override
-                    public void onCallBack(boolean bool) {
-                        firebaseBooleanCallback.onCallBack(bool);
-                    }
-                });
+                firebaseDecRefCallback.onCallBack(documentReference);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.i("DATABASE", "FAILED TO ADD MATCH");
-                firebaseBooleanCallback.onCallBack(false);
             }
         });
     }
@@ -448,6 +442,9 @@ public class Database {
     }
     public interface FirebaseBooleanCallback{
         void onCallBack(boolean bool);
+    }
+    public interface FirebaseDecRefCallback{
+        void onCallBack(DocumentReference docRef);
     }
 }
 
