@@ -52,13 +52,14 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private String roomName;
     ValueEventListener valueEventListener;
     FirebaseAuth mAuth;
-    private boolean removeListener;
+    private int ctr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_game);
 
+        ctr = 0;
         currentPlayer = "White";
         storagePreferences = new StoragePreferences(getApplicationContext());
         piecesLoad = new ArrayList<>();
@@ -177,7 +178,6 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                                 enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
                                 playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
                                 checkerGame.checkWinner();
-                                removeListener = true;
                                 win();
                             }
                         }
@@ -262,11 +262,12 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         }
     }
     public void win(){
-        if(valueEventListener == null){
+        if(ctr>0){
             return;
         }
         if(!checkerGame.getWinningPlayer().equals("None")) {
-
+            ctr++;
+            Log.i("TAG", "COUNTER: " + ctr);
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             Database db = new Database();
             roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
