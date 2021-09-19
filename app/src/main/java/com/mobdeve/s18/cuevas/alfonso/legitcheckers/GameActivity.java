@@ -288,22 +288,22 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     }
     public void winfunc(String player1, String player2, String winner){
         Database db = new Database();
-        String loser;
-
         db.addMatchToDatabase(player1, player2, winner, new Database.FirebaseDecRefCallback() {
             @Override
             public void onCallBack(DocumentReference docRef) {
-                if(currentPlayer.equals(player1)) {
-                    db.addMatchToUser(player1, docRef.toString(), new Database.FirebaseBooleanCallback() {
+                if(mAuth.getCurrentUser().getUid().equals(player1)) {
+                    db.addMatchToUser(player1, docRef.getPath(), new Database.FirebaseBooleanCallback() {
                         @Override
                         public void onCallBack(boolean bool) {
                             if(winner.equals(player1)) {
+                                Log.i("DB", "ADDING WIN");
                                 db.addWin(player1, new Database.FirebaseBooleanCallback() {
                                     @Override
                                     public void onCallBack(boolean bool) {}
                                 });
                             }
                             else {
+                                Log.i("DB", "ADDING LOSS");
                                 db.addLoss(player1, new Database.FirebaseBooleanCallback() {
                                     @Override
                                     public void onCallBack(boolean bool) {}
@@ -313,7 +313,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                     });
                 }
                 else{
-                    db.addMatchToUser(player2, docRef.toString(), new Database.FirebaseBooleanCallback() {
+                    db.addMatchToUser(player2, docRef.getPath(), new Database.FirebaseBooleanCallback() {
                         @Override
                         public void onCallBack(boolean bool) {
                             if(winner.equals(player2)) {
