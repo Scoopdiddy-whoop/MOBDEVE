@@ -78,27 +78,25 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         if(status.equals("host")){
             piecesLoad.clear();
             Log.i("GAMEACTIVITY", "HAHATDOG");
-//            int row = 0;
-//            for (int i = 8; row < i; ++row) {
-//                int col = 0;
-//                for (int j = 8; col < j; ++col) {
-//                    boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
-//                    if (row < 3) {
-//                        if (positions) {
-//                            piecesLoad.add(new CheckerPiece(col, row, "Black", false));
-//                        }
-//                    }
-//
-//                    if (row > 4) {
-//                        if (positions)
-//                            piecesLoad.add(new CheckerPiece(col, row, "White", false));
-//                    }
-//                }
-//            }
-            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
-            piecesLoad.add(new CheckerPiece(5, 4, "Black", true));
-//            piecesLoad.add(new CheckerPiece(2, 3, "White", true));
-//            piecesLoad.add(new CheckerPiece(4, 1, "Black", true));
+            int row = 0;
+            for (int i = 8; row < i; ++row) {
+                int col = 0;
+                for (int j = 8; col < j; ++col) {
+                    boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
+                    if (row < 3) {
+                        if (positions) {
+                            piecesLoad.add(new CheckerPiece(col, row, "Black", false));
+                        }
+                    }
+
+                    if (row > 4) {
+                        if (positions)
+                            piecesLoad.add(new CheckerPiece(col, row, "White", false));
+                    }
+                }
+            }
+/*            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
+            piecesLoad.add(new CheckerPiece(5, 4, "Black", true));*/
             checkerGame = new CheckerGame(piecesLoad);
             Log.i("TEST", checkerGame.getWinningPlayer());
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
