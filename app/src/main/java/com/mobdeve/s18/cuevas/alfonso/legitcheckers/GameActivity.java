@@ -262,8 +262,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         }
     }
     public void win(){
+        if(valueEventListener == null){
+            return;
+        }
         if(!checkerGame.getWinningPlayer().equals("None")) {
-            roomRef.removeEventListener(valueEventListener);
+
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             Database db = new Database();
             roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
