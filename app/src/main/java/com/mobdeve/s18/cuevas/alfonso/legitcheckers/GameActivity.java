@@ -52,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     private String roomName;
     ValueEventListener valueEventListener;
     FirebaseAuth mAuth;
+    private boolean removeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +149,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean won = false;
 //                currentPlayer = roomRef.child("Turn").get().toString();
 //                checkerGame.setCurrentPlayer(currentPlayer);
                 roomRef.child("turn").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -175,6 +177,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                                 enemyScore.setText("Enemy: " + (12 - checkerGame.getNumPieces("White")));
                                 playerScore.setText("Player: " + (12 - checkerGame.getNumPieces("Black")));
                                 checkerGame.checkWinner();
+                                removeListener = true;
                                 win();
                             }
                         }
@@ -260,6 +263,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     }
     public void win(){
         if(!checkerGame.getWinningPlayer().equals("None")) {
+            roomRef.removeEventListener(valueEventListener);
             Log.i("TAG", checkerGame.getWinningPlayer() + " WON THE GAME!!!");
             Database db = new Database();
             roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -268,14 +272,14 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                     String player1 =  task.getResult().child("p1ID").getValue().toString();
                     String player2 = task.getResult().child("p2ID").getValue().toString();
                     String winner;
+
                     if(checkerGame.getWinningPlayer().equals("White")){
                         winner = player1;
-                        winfunc(player1, player2, winner);
                     }
                     else{
                         winner = player2;
-                        winfunc(player1, player2, winner);
                     }
+                    winfunc(player1, player2, winner);
                     Log.i("DEBUG", "opening");
 //                    openWinnerDialog();
                     gameHeader.setText(checkerGame.getWinningPlayer() + " Won!");
