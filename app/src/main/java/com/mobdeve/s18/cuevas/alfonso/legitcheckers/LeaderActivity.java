@@ -72,20 +72,18 @@ public class LeaderActivity extends AppCompatActivity {
 
                         leaders.add(new Leader(username, wins));
                     }
-                    int i, key, j;
-                    for (i = 1; i < leaders.size(); i++)
-                    {
-                        key = leaders.get(i).getWins();
-                        j = i - 1;
-                        /* Move elements of arr[0..i-1], that are
-                        greater than key, to one position ahead
-                        of their current position */
-                        while (j >= 0 && leaders.get(j).getWins() < key)
-                        {
-                            leaders.set(j+1, leaders.get(j));
-                            j = j - 1;
+                    int i, j;
+                    Leader temp;
+                    for(i=0; i < leaders.size(); i++){
+                        for(j=1; j < (leaders.size()-i); j++){
+                            if(leaders.get(j-1).getWins() < leaders.get(j).getWins()){
+                                //swap elements
+                                temp = leaders.get(j-1);
+                                leaders.set(j-1, leaders.get(j));
+                                leaders.set(j, temp);
+                            }
+
                         }
-                        leaders.set(j+1, leaders.get(i));
                     }
 //                    Collections.reverse(leaders);
                     RecyclerView rv_players = binding.rvPlayers;

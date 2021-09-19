@@ -81,7 +81,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             piecesLoad.clear();
             Log.i("GAMEACTIVITY", "HAHATDOG");
             int row = 0;
-            /*for (int i = 8; row < i; ++row) {
+            for (int i = 8; row < i; ++row) {
                 int col = 0;
                 for (int j = 8; col < j; ++col) {
                     boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
@@ -96,11 +96,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             piecesLoad.add(new CheckerPiece(col, row, "White", false));
                     }
                 }
-            }*/
-            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
+            }
+/*            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
             piecesLoad.add(new CheckerPiece(5, 4, "Black", true));
             piecesLoad.add(new CheckerPiece(1, 2, "White", true));
-            piecesLoad.add(new CheckerPiece(4, 3, "Black", true));
+            piecesLoad.add(new CheckerPiece(4, 3, "Black", true));*/
             checkerGame = new CheckerGame(piecesLoad);
             Log.i("TEST", checkerGame.getWinningPlayer());
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
@@ -244,10 +244,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     @Override
     public void movePiece(Square from, Square to) {
         boolean antiStun1, antiStun2;
-        antiStun1 = status.equals("host") && (checkerGame.getCurrentPlayer().equals("White"));
-        antiStun2 = status.equals("guest") && (checkerGame.getCurrentPlayer().equals("Black"));
-        if(antiStun1 || antiStun2)
-            if((status.equals("host") && pieceAt(from).getPlayer().equals("White"))
+        if((status.equals("host") && pieceAt(from).getPlayer().equals("White"))
                     || status.equals("guest") && pieceAt(from).getPlayer().equals("Black")){
                 checkerGame.movePiece(from, to);
                 boardView.invalidate();
@@ -262,7 +259,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                 }
                 roomRef.child("turn").setValue(currentPlayer);
 
-            }
+        }
     }
     public void win(){
         if(ctr>0){
