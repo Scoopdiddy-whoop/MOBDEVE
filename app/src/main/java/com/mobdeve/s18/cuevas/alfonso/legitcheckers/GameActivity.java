@@ -79,7 +79,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             piecesLoad.clear();
             Log.i("GAMEACTIVITY", "HAHATDOG");
             int row = 0;
-            for (int i = 8; row < i; ++row) {
+            /*for (int i = 8; row < i; ++row) {
                 int col = 0;
                 for (int j = 8; col < j; ++col) {
                     boolean positions = (col % 2 == 1 && row % 2 != 1) || (col % 2 == 0 && row % 2 == 1);
@@ -94,9 +94,9 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             piecesLoad.add(new CheckerPiece(col, row, "White", false));
                     }
                 }
-            }
-/*            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
-            piecesLoad.add(new CheckerPiece(5, 4, "Black", true));*/
+            }*/
+            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
+            piecesLoad.add(new CheckerPiece(5, 4, "Black", true));
             checkerGame = new CheckerGame(piecesLoad);
             Log.i("TEST", checkerGame.getWinningPlayer());
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
@@ -240,9 +240,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
     public void movePiece(Square from, Square to) {
         if((status.equals("host") && pieceAt(from).getPlayer().equals("White"))
                 || status.equals("guest") && pieceAt(from).getPlayer().equals("Black")){
+            boolean antiStun;
             checkerGame.movePiece(from, to);
             boardView.invalidate();
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
+            antiStun = currentPlayer != checkerGame.getCurrentPlayer();
             currentPlayer = checkerGame.getCurrentPlayer();
             Log.i("PLAY", "moved MOVE PIECE: " + currentPlayer);
             Log.i("PLAY", "CURR: " + currentPlayer);
@@ -251,7 +253,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             }else{
                 currentPlayer = "Black";
             }
-            roomRef.child("turn").setValue(currentPlayer);
+            if(antiStun)
+                roomRef.child("turn").setValue(currentPlayer);
 
         }
     }
