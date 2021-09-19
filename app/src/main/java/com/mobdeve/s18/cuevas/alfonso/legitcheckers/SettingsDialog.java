@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ public class SettingsDialog extends AppCompatDialogFragment {
     private CheckBox checkBox;
     private Switch nightSwitch;
     private ImageView home;
+    private TextViewOutline tv_theme;
+    private LinearLayout ll_theme;
     private boolean playMusic;
     private boolean nightMode;
     private StoragePreferences storagePreferences;
@@ -41,11 +44,16 @@ public class SettingsDialog extends AppCompatDialogFragment {
         sContext = view.getContext();
         storagePreferences = new StoragePreferences(sContext);
 
-
+        ll_theme = view.findViewById(R.id.ll_theme);
+        tv_theme = view.findViewById(R.id.tv_theme);
         checkBox = view.findViewById(R.id.cb_music);
         nightSwitch = view.findViewById(R.id.sw_night);
         home = view.findViewById(R.id.homebg);
 
+        if(getActivity().getClass() == GameActivity.class){
+            ll_theme.setVisibility(View.INVISIBLE);
+            tv_theme.setVisibility(View.INVISIBLE);
+        }
         playMusic = storagePreferences.getMusicPreferences("Play");
         nightMode = storagePreferences.getThemePreferences("Theme");
         nightSwitch.setChecked(nightMode);
@@ -69,6 +77,7 @@ public class SettingsDialog extends AppCompatDialogFragment {
                 }
             }
         });
+
         nightSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->  {
             nightMode = isChecked;
         });

@@ -78,7 +78,7 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
         Log.i("GAMEACTIVITY", "ON CREATE");
 
         if(status.equals("host")){
-            piecesLoad.clear();
+            /*piecesLoad.clear();
             Log.i("GAMEACTIVITY", "HAHATDOG");
             int row = 0;
             for (int i = 8; row < i; ++row) {
@@ -96,11 +96,11 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
                             piecesLoad.add(new CheckerPiece(col, row, "White", false));
                     }
                 }
-            }
-/*            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
+            }*/
+            piecesLoad.add(new CheckerPiece(4, 5, "White", true));
             piecesLoad.add(new CheckerPiece(5, 4, "Black", true));
             piecesLoad.add(new CheckerPiece(1, 2, "White", true));
-            piecesLoad.add(new CheckerPiece(4, 3, "Black", true));*/
+            piecesLoad.add(new CheckerPiece(4, 3, "Black", true));
             checkerGame = new CheckerGame(piecesLoad);
             Log.i("TEST", checkerGame.getWinningPlayer());
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
