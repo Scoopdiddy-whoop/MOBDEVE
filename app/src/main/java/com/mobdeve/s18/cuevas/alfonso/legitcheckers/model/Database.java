@@ -132,7 +132,8 @@ public class Database {
         getMatches(user, new FirebaseMapCallback() {
             @Override
             public void onCallBack(Map<String, String> matches) {
-                matches.put("matchID" + matches.size() + 1,  matchID);
+                DocumentReference docRef = db.document(matchID);
+                matches.put("matchID" + matches.size() + 1,  docRef.getId());
                 final boolean[] valid = new boolean[1];
                 db.collection("users").document(user).update("matches", matches).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
