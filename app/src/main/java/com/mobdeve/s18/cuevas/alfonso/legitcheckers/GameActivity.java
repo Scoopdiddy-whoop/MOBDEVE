@@ -99,6 +99,8 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
             }*/
             piecesLoad.add(new CheckerPiece(4, 5, "White", true));
             piecesLoad.add(new CheckerPiece(5, 4, "Black", true));
+            piecesLoad.add(new CheckerPiece(1, 2, "White", true));
+            piecesLoad.add(new CheckerPiece(4, 3, "Black", true));
             checkerGame = new CheckerGame(piecesLoad);
             Log.i("TEST", checkerGame.getWinningPlayer());
             roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
@@ -241,25 +243,26 @@ public class GameActivity extends AppCompatActivity implements PiecePosition {
 
     @Override
     public void movePiece(Square from, Square to) {
-        if((status.equals("host") && pieceAt(from).getPlayer().equals("White"))
-                || status.equals("guest") && pieceAt(from).getPlayer().equals("Black")){
-            boolean antiStun;
-            checkerGame.movePiece(from, to);
-            boardView.invalidate();
-            roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
-            antiStun = currentPlayer != checkerGame.getCurrentPlayer();
-            currentPlayer = checkerGame.getCurrentPlayer();
-            Log.i("PLAY", "moved MOVE PIECE: " + currentPlayer);
-            Log.i("PLAY", "CURR: " + currentPlayer);
-            if(currentPlayer.equals("White")){
-                currentPlayer = "White";
-            }else{
-                currentPlayer = "Black";
-            }
-            if(antiStun)
+        boolean antiStun1, antiStun2;
+        antiStun1 = status.equals("host") && (checkerGame.getCurrentPlayer().equals("White"));
+        antiStun2 = status.equals("guest") && (checkerGame.getCurrentPlayer().equals("Black"));
+        if(antiStun1 || antiStun2)
+            if((status.equals("host") && pieceAt(from).getPlayer().equals("White"))
+                    || status.equals("guest") && pieceAt(from).getPlayer().equals("Black")){
+                checkerGame.movePiece(from, to);
+                boardView.invalidate();
+                roomRef.child("boxes").setValue(checkerGame.getPiecesBox());
+                currentPlayer = checkerGame.getCurrentPlayer();
+                Log.i("PLAY", "moved MOVE PIECE: " + currentPlayer);
+                Log.i("PLAY", "CURR: " + currentPlayer);
+                if(currentPlayer.equals("White")){
+                    currentPlayer = "White";
+                }else{
+                    currentPlayer = "Black";
+                }
                 roomRef.child("turn").setValue(currentPlayer);
 
-        }
+            }
     }
     public void win(){
         if(ctr>0){
